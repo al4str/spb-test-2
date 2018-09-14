@@ -1,0 +1,21 @@
+{
+  "name": "spb-test-2",
+  "description": "👌",
+  "version": "1.0.0",
+  "author": "al4str",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:al4str/spb-test-2.git"
+  },
+  "scripts": {},
+  "devDependencies": {
+    "express": "^4.16.3",
+    "parcel-bundler": "^1.9.7"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.26.0",
+    "d3": "^5.7.0",
+    "d3-time-format": "^2.1.3"
+  }
+}
