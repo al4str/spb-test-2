@@ -1,175 +1,183 @@
 
-.line {
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1rem;
+  line-height: 1.375;
+  color: #f2f2f2;
+  background: url('./noise-100x100.png') repeat, #333333;
+}
+
+.wrp {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart {}
+.chart__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.chart__title {
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.chart__radio-list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  user-select: none;
+}
+.chart__radio-item {
+  position: relative;
+  margin-left: 1rem;
+}
+.chart__radio-item:first-child {
+  margin-left: 0;
+}
+.chart__radio-field {
+  position: absolute;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+.chart__radio-cap {
+  color: rgba(255, 255, 255, 0.3);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.chart__radio-item:hover .chart__radio-cap {
+  color: rgba(255, 255, 255, 0.6);
+}
+.chart__radio-field:focus + .chart__radio-cap {
+  outline: 1px dotted rgba(255, 255, 255, 0.3);
+  outline-offset: 1px;
+}
+.chart__radio-field:checked + .chart__radio-cap {
+  color: #f2f2f2;
+  border-color: #2fa974;
+}
+.chart__main {
+  margin-top: 1rem;
+}
+.chart__ohlc-list {
+  display: flex;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  justify-content: space-around;
+  list-style: none;
+}
+.chart__ohlc-item {
+  margin-left: 1rem;
+}
+.chart__ohlc-item:first-child {
+  margin-left: 0;
+}
+.chart__ohlc-label {
+  color: rgba(255, 255, 255, 0.3);
+}
+.chart__ohlc-value {
+  display: inline-block;
+  width: 3rem;
+  text-align: center;
+  color: #2fa974;
+}
+.chart__container {
+  display: block;
+  user-select: none;
+}
+.chart__footer {
+  display: flex;
+  margin-top: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chart__main-group {}
+.chart__x-axis .domain,
+.chart__y-axis .domain {
+  stroke: rgba(255, 255, 255, 0.3);
+  shape-rendering: crispEdges;
+}
+.chart__x-axis .tick line,
+.chart__y-axis .tick line {
+  display: none;
+}
+.chart__grid line {
+  stroke: rgba(255, 255, 255, 0.1);
+  shape-rendering: crispEdges;
+}
+.chart__grid path {
+  display: none;
+}
+.chart__x-focus-line,
+.chart__y-focus-line {
+  stroke: #f2f2f2;
+  stroke-width: 1px;
+  stroke-dasharray: 3;
+  shape-rendering: crispEdges;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+.chart__focus-group {
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.chart__focus-value-rect {
+  fill: #2fa974;
+}
+.chart__focus-value {
+  text-anchor: middle;
+  alignment-baseline: middle;
+  font-size: 0.625rem;
+  fill: #f2f2f2;
+}
+.chart__focus-overlay {
   fill: none;
-  stroke: steelblue;
+  pointer-events: all;
+  cursor: crosshair;
+}
+.chart__area-gradient-stop {
+  stop-color: #21825C;
+}
+.chart__line-path {
+  fill: none;
+  stroke: #207550;
+  stroke-linejoin: round;
+  stroke-linecap: round;
   stroke-width: 2px;
 }
+.chart__line-area {}
+.chart__candle-group {}
+.chart__candle-candle {}
+.chart__candle-stem {}
+.chart__candle_equal {
+  fill: rgba(255, 255, 255, 0.6);
+  stroke: rgba(255, 255, 255, 0.6);
 
-.grid line {
-  stroke: lightgrey;
-  stroke-opacity: 0.7;
-  shape-rendering: crispEdges;
 }
-
-.grid path {
-  stroke-width: 0;
+.chart__candle_higher {
+  fill: #d25560;
+  stroke: #d25560;
 }
-
-
-/* Container
-/* =============================================== */
-#demobox {
-  margin: auto;
-  min-height: 310px;
-  min-width: 700px;
-  max-width: 800px;
-  padding-left: 30px;
-  color: #333;
-}
-#csbox {
-  color: #fff;
-  background: #292f3b;
-  margin: 10px auto;
-  width: 670px;
-  height: 500px;
-  font-size: small;
-  text-align: center;
-}
-/* Candlestick Chart
-/* =============================================== */
-#chart1 .grid {
-  stroke-opacity: .3;
-}
-#chart1 .axis line,
-#chart1 .axis.xaxis path {
-  fill: none;
-  stroke: darkgrey;
-  shape-rendering: crispEdges;
-}
-#chart1 .tick text {
-  font: 10px sans-serif;
-  fill: darkgrey;
-  stroke-opacity: .3;
-}
-#chart1 .axis.yaxis path {
-  fill: none;
-  stroke: #292f3b;
-}
-#chart1 .bands rect {
-  fill: darkgrey;
-  fill-opacity: 0;
-  stroke-opacity: 0;
-  pointer-events: all;
-  shape-rendering: crispEdges;
-}
-#chart1 .bands .hoved {
-  fill-opacity: .6;
-}
-#chart1 .sticks rect {
-  pointer-events: none;
-  shape-rendering: crispEdges;
-}
-#chart1 .sticks .rise, #chart1 .candles .rise {
-  fill: lightgrey;
-}
-#chart1 .sticks .fall, #chart1 .candles .fall {
-  fill: turquoise;
-}
-#chart1 .sticks .hoved {
-  stroke: white;
-}
-#chart1 .candles .hoved {
-  stroke: white;
-}
-#chart1 .candles rect {
-  pointer-events: none;
-  shape-rendering: crispEdges;
-}
-#chart1 .bbmn {
-  fill: none;
-  stroke: cyan;
-  stroke-width: 1.5px;
-  pointer-events: none;
-}
-#chart1 .bbup {
-  fill: none;
-  stroke: green;
-  stroke-width: 1.5px;
-  pointer-events: none;
-}
-#chart1 .bbdn {
-  fill: none;
-  stroke: crimson;
-  stroke-width: 1.5px;
-  pointer-events: none;
-}
-#chart1 .volumebar {
-  fill: darkgrey;
-}
-#chart1 .volumebar rect {
-  pointer-events: none;
-}
-#chart1 .volumebar .hoved {
-  fill: white;
-}
-#chart1 .sigmabar {
-  fill: darkgrey;
-}
-#chart1 .sigmabar rect {
-  pointer-events: none;
-}
-#chart1 .sigmabar .hoved {
-  fill: white;
-}
-#option {
-  width: 230px;
-  height: 25px;
-  float: left;
-  padding-top: 5px;
-}
-#option input {
-  cursor: pointer;
-  border-radius: 5px;
-  color: #fff;
-  background: #696d75;
-  border: none;
-}
-#option input {
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.75);
-}
-#option .active {
-  cursor: auto;
-  background: #94979d;
-}
-#option .active {
-  box-shadow: none;
-}
-#infobar {
-  width: 440px;
-  height: 25px;
-  float: left;
-  padding-top: 5px;
-  text-align: left;
-  font-family: sans-serif;
-}
-.infohead {
-  width: 140px;
-  height: 25px;
-  margin: 0 2px;
-  float: left;
-}
-.infobox {
-  width: 70px;
-  height: 30px;
-  margin: 0 2px;
-  float: left;
-}
-#volchart .volbar .volfill {
-  fill: crimson;
-}
-#volchart .sigbar .sigfill {
-  fill: crimson;
-}
-#volchart input {
-  cursor: pointer;
+.chart__candle_lower {
+  fill: #2fa974;
+  stroke: #2fa974;
 }

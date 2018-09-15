@@ -5,88 +5,90 @@
   <link rel="stylesheet" href="/styles.3c4e0126.css">
 <script src="/styles.3c4e0126.js"></script></head>
 <body>
-<article class="chart">
-  <header class="chart__header">
-    <h1 class="chart__title" id="chart__title"></h1>
-    <div class="chart__radio-list" id="chart__symbol" role="radiogroup">
-      <label class="chart__radio-item">
-        <input class="chart__radio-field" type="radio" name="chart__symbol" value="aapl">
-        <span class="chart__radio-cap">Apple</span>
-      </label>
-      <label class="chart__radio-item">
-        <input class="chart__radio-field" type="radio" name="chart__symbol" value="googl">
-        <span class="chart__radio-cap">Google</span>
-      </label>
-      <label class="chart__radio-item">
-        <input class="chart__radio-field" type="radio" name="chart__symbol" value="msft">
-        <span class="chart__radio-cap">Microsoft</span>
-      </label>
-    </div>
-  </header>
-  <main class="chart__main">
-    <ul class="chart__ohlc-list">
-      <li class="chart__ohlc-item">
-        <span class="chart__ohlc-label">ОТКР</span>
-        <span class="chart__ohlc-value" id="chart__open"></span>
-      </li>
-      <li class="chart__ohlc-item">
-        <span class="chart__ohlc-label">МАКС</span>
-        <span class="chart__ohlc-value" id="chart__high"></span>
-      </li>
-      <li class="chart__ohlc-item">
-        <span class="chart__ohlc-label">МИН</span>
-        <span class="chart__ohlc-value" id="chart__low"></span>
-      </li>
-      <li class="chart__ohlc-item">
-        <span class="chart__ohlc-label">ЗАКР</span>
-        <span class="chart__ohlc-value" id="chart__close"></span>
-      </li>
-    </ul>
-    <svg class="chart__container" id="chart__container" width="620" height="460"></svg>
-  </main>
-  <footer class="chart__footer">
-    <div class="chart__radio-list" id="chart__period" role="radiogroup">
-      <label class="chart__radio-item" title="1 день">
-        <input class="chart__radio-field" type="radio" name="chart__period" value="1d">
-        <span class="chart__radio-cap">1Д</span>
-      </label>
-      <label class="chart__radio-item" title="1 месяц">
-        <input class="chart__radio-field" type="radio" name="chart__period" value="1m">
-        <span class="chart__radio-cap">1М</span>
-      </label>
-      <label class="chart__radio-item" title="3 месяца">
-        <input class="chart__radio-field" type="radio" name="chart__period" value="3m">
-        <span class="chart__radio-cap">3М</span>
-      </label>
-      <label class="chart__radio-item" title="6 месяцев">
-        <input class="chart__radio-field" type="radio" name="chart__period" value="6m">
-        <span class="chart__radio-cap">6М</span>
-      </label>
-      <label class="chart__radio-item" title="От начала года">
-        <input class="chart__radio-field" type="radio" name="chart__period" value="ytd">
-        <span class="chart__radio-cap">YTD</span>
-      </label>
-      <label class="chart__radio-item" title="1 год">
-        <input class="chart__radio-field" type="radio" name="chart__period" value="1y">
-        <span class="chart__radio-cap">1Г</span>
-      </label>
-      <label class="chart__radio-item" title="5 лет">
-        <input class="chart__radio-field" type="radio" name="chart__period" value="5y">
-        <span class="chart__radio-cap">5Л</span>
-      </label>
-    </div>
-    <div class="chart__radio-list" id="chart__type" role="radiogroup">
-      <label class="chart__radio-item">
-        <input class="chart__radio-field" type="radio" name="chart__type" value="line">
-        <span class="chart__radio-cap">Линия</span>
-      </label>
-      <label class="chart__radio-item">
-        <input class="chart__radio-field" type="radio" name="chart__type" value="candle">
-        <span class="chart__radio-cap">Японские свечи</span>
-      </label>
-    </div>
-  </footer>
-</article>
+<div class="wrp">
+  <article class="chart">
+    <header class="chart__header">
+      <h1 class="chart__title" id="chart__title"></h1>
+      <div class="chart__radio-list" id="chart__symbol" role="radiogroup">
+        <label class="chart__radio-item">
+          <input class="chart__radio-field" type="radio" name="chart__symbol" value="aapl">
+          <span class="chart__radio-cap">Apple</span>
+        </label>
+        <label class="chart__radio-item">
+          <input class="chart__radio-field" type="radio" name="chart__symbol" value="googl">
+          <span class="chart__radio-cap">Google</span>
+        </label>
+        <label class="chart__radio-item">
+          <input class="chart__radio-field" type="radio" name="chart__symbol" value="msft">
+          <span class="chart__radio-cap">Microsoft</span>
+        </label>
+      </div>
+    </header>
+    <main class="chart__main">
+      <ul class="chart__ohlc-list">
+        <li class="chart__ohlc-item">
+          <span class="chart__ohlc-label">ОТКР</span>
+          <span class="chart__ohlc-value" id="chart__open"></span>
+        </li>
+        <li class="chart__ohlc-item">
+          <span class="chart__ohlc-label">МАКС</span>
+          <span class="chart__ohlc-value" id="chart__high"></span>
+        </li>
+        <li class="chart__ohlc-item">
+          <span class="chart__ohlc-label">МИН</span>
+          <span class="chart__ohlc-value" id="chart__low"></span>
+        </li>
+        <li class="chart__ohlc-item">
+          <span class="chart__ohlc-label">ЗАКР</span>
+          <span class="chart__ohlc-value" id="chart__close"></span>
+        </li>
+      </ul>
+      <svg class="chart__container" id="chart__container" width="620" height="460"></svg>
+    </main>
+    <footer class="chart__footer">
+      <div class="chart__radio-list" id="chart__period" role="radiogroup">
+        <label class="chart__radio-item" title="1 день">
+          <input class="chart__radio-field" type="radio" name="chart__period" value="1d">
+          <span class="chart__radio-cap">1Д</span>
+        </label>
+        <label class="chart__radio-item" title="1 месяц">
+          <input class="chart__radio-field" type="radio" name="chart__period" value="1m">
+          <span class="chart__radio-cap">1М</span>
+        </label>
+        <label class="chart__radio-item" title="3 месяца">
+          <input class="chart__radio-field" type="radio" name="chart__period" value="3m">
+          <span class="chart__radio-cap">3М</span>
+        </label>
+        <label class="chart__radio-item" title="6 месяцев">
+          <input class="chart__radio-field" type="radio" name="chart__period" value="6m">
+          <span class="chart__radio-cap">6М</span>
+        </label>
+        <label class="chart__radio-item" title="От начала года">
+          <input class="chart__radio-field" type="radio" name="chart__period" value="ytd">
+          <span class="chart__radio-cap">YTD</span>
+        </label>
+        <label class="chart__radio-item" title="1 год">
+          <input class="chart__radio-field" type="radio" name="chart__period" value="1y">
+          <span class="chart__radio-cap">1Г</span>
+        </label>
+        <label class="chart__radio-item" title="5 лет">
+          <input class="chart__radio-field" type="radio" name="chart__period" value="5y">
+          <span class="chart__radio-cap">5Л</span>
+        </label>
+      </div>
+      <div class="chart__radio-list" id="chart__type" role="radiogroup">
+        <label class="chart__radio-item">
+          <input class="chart__radio-field" type="radio" name="chart__type" value="line">
+          <span class="chart__radio-cap">Линия</span>
+        </label>
+        <label class="chart__radio-item">
+          <input class="chart__radio-field" type="radio" name="chart__type" value="candle">
+          <span class="chart__radio-cap">Японские свечи</span>
+        </label>
+      </div>
+    </footer>
+  </article>
+</div>
 <script src="/src.0b481194.js"></script>
 <script>
 

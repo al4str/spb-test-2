@@ -33193,9 +33193,6 @@ require('regenerator-runtime/runtime');
 var d3 = require('d3');
 var ruTimeLocale = require('d3-time-format/locale/ru-RU');
 
-// const TIntervals = { '1M': 'day', '3M': 'day', '6M': 'day', '1Y': 'week', '2Y': 'week', '4Y': 'month', };
-// const TFormat = { 'day': '%d %b \'%y', 'week': '%d %b \'%y', 'month': '%b \'%y' };
-
 var documentReady = function documentReady() {
   return new Promise(function (resolve) {
     document.readyState === 'complete' ? resolve() : window.addEventListener('load', resolve, true);
@@ -33240,12 +33237,46 @@ var fetchStockData = function () {
     }, _callee, _this, [[2, 9]]);
   }));
 
-  return function fetchStockData(_x2, _x3) {
+  return function fetchStockData(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
 
+var listenRadioGroupChanges = function listenRadioGroupChanges($d3Target, handler, initialValue) {
+  if (!$d3Target || typeof handler !== 'function') {
+    return;
+  }
+  $d3Target.selectAll('input[type="radio"]').on('change', handler);
+  $d3Target.select('input[value="' + initialValue + '"]').node().checked = true;
+};
+
 var State = function () {
+  _createClass(State, null, [{
+    key: 'checkName',
+    value: function checkName(name, state) {
+      if (!name || !state.hasOwnProperty(name)) {
+        throw new Error('Name "' + name + '" not found');
+      }
+      return true;
+    }
+  }, {
+    key: 'checkValue',
+    value: function checkValue(value) {
+      if (value === undefined) {
+        throw new Error('Value is undefined');
+      }
+      return true;
+    }
+  }, {
+    key: 'checkSubscriber',
+    value: function checkSubscriber(subscriber) {
+      if (typeof subscriber !== 'function') {
+        throw new Error('Subscriber is not a function');
+      }
+      return true;
+    }
+  }]);
+
   function State() {
     var initialState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
@@ -33258,17 +33289,14 @@ var State = function () {
   _createClass(State, [{
     key: 'get',
     value: function get(name) {
-      if (!name || !this.state.hasOwnProperty(name)) {
-        return;
-      }
+      State.checkName(name, this.state);
       return this.state[name];
     }
   }, {
     key: 'update',
     value: function update(name, value) {
-      if (!name || value === undefined || !this.state.hasOwnProperty(name)) {
-        return;
-      }
+      State.checkName(name, this.state);
+      State.checkValue(value);
       var state = {};
       Object.entries(this.state).forEach(function (_ref2) {
         var _ref3 = _slicedToArray(_ref2, 2),
@@ -33293,9 +33321,8 @@ var State = function () {
   }, {
     key: 'subscribe',
     value: function subscribe(name, subscriber) {
-      if (!name || typeof subscriber !== 'function' || !this.state.hasOwnProperty(name)) {
-        return;
-      }
+      State.checkName(name, this.state);
+      State.checkSubscriber(subscriber);
       if (!this.subscribers[name]) {
         this.subscribers[name] = [];
       }
@@ -33322,111 +33349,567 @@ var State = function () {
   return State;
 }();
 
-var listenRadioGroupChanges = function listenRadioGroupChanges($d3Target, handler) {
-  if (!$d3Target || typeof handler !== 'function') {
+var Chart = function () {
+  _createClass(Chart, null, [{
+    key: 'getDateFormat',
+    value: function getDateFormat(isDay) {
+      return isDay ? d3.timeFormat('%H:%M') : d3.timeFormat('%d.%m.%Y');
+    }
+  }, {
+    key: 'getValueFormat',
+    value: function getValueFormat() {
+      return d3.format(',.2f');
+    }
+  }, {
+    key: 'getDataItemFromXCoordinate',
+    value: function getDataItemFromXCoordinate(xCoordinate, xScale, data) {
+      var bisectDate = d3.bisector(function (_ref6) {
+        var date = _ref6.date;
+        return date;
+      }).left;
+      var xDate = xScale.invert(xCoordinate);
+      var index = bisectDate(data, xDate, 1);
+      var prevDataItem = data[index - 1];
+      var dataItem = data[index];
+      return xDate - prevDataItem.date > dataItem.date - xDate ? dataItem : prevDataItem;
+    }
+  }]);
+
+  function Chart(props) {
+    _classCallCheck(this, Chart);
+
+    var $container = props.$container,
+        requestStateUpdate = props.requestStateUpdate;
+
+    this.width = 0;
+    this.height = 0;
+    this.marginTop = 20;
+    this.marginRight = 20;
+    this.marginBottom = 40;
+    this.marginLeft = 60;
+    this.data = [];
+    this.$container = $container;
+    this.$mainGroup = null;
+    this.requestStateUpdate = requestStateUpdate;
+    this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.handleMouseOver = this.handleMouseOver.bind(this);
+    this.handleMouseOut = this.handleMouseOut.bind(this);
+  }
+
+  _createClass(Chart, [{
+    key: 'updateData',
+    value: function updateData(rawData) {
+      var _this3 = this;
+
+      this.data = rawData.map(function (item) {
+        item.date = _this3.isDay ? d3.timeParse('%Y%m%d %H:%M')(item.date + ' ' + item.minute) : d3.timeParse('%Y-%m-%d')(item.date);
+        return item;
+      });
+    }
+  }, {
+    key: 'handleMouseMove',
+    value: function handleMouseMove(isDay) {
+      if (!this.data.length) {
+        return;
+      }
+
+      var _d3$mouse = d3.mouse(this.$focusOverlay.node()),
+          _d3$mouse2 = _slicedToArray(_d3$mouse, 2),
+          xCoordinate = _d3$mouse2[0],
+          yCoordinate = _d3$mouse2[1];
+
+      var dataItem = Chart.getDataItemFromXCoordinate(xCoordinate, this.xScale, this.data);
+      var date = dataItem.date,
+          open = dataItem.open,
+          high = dataItem.high,
+          low = dataItem.low,
+          close = dataItem.close;
+
+      this.$xFocusValue.text(Chart.getDateFormat(isDay)(date));
+      this.$yFocusValue.text(Chart.getValueFormat()(close));
+
+      var _$xFocusValue$node$ge = this.$xFocusValue.node().getBBox(),
+          xValueWidth = _$xFocusValue$node$ge.width,
+          xValueHeight = _$xFocusValue$node$ge.height;
+
+      var _$yFocusValue$node$ge = this.$yFocusValue.node().getBBox(),
+          yValueWidth = _$yFocusValue$node$ge.width,
+          yValueHeight = _$yFocusValue$node$ge.height;
+
+      var paddingX = 12;
+      var paddingY = 8;
+      var xRectWidth = xValueWidth + paddingX;
+      var xRectHeight = xValueHeight + paddingY;
+      this.$xFocusValueGroup.attr('transform', 'translate(' + xCoordinate + ', ' + (this.height + xRectHeight / 2) + ')');
+      this.$xFocusValueRect.attr('width', xRectWidth).attr('height', xRectHeight).attr('transform', 'translate(' + -1 * xRectWidth / 2 + ', ' + -1 * xRectHeight / 2 + ')');
+      var yRectWidth = yValueWidth + paddingX;
+      var yRectHeight = yValueHeight + paddingY;
+      this.$yFocusValueGroup.attr('transform', 'translate(' + -1 * yRectWidth / 2 + ', ' + yCoordinate + ')');
+      this.$yFocusValueRect.attr('width', yRectWidth).attr('height', yRectHeight).attr('transform', 'translate(' + -1 * yRectWidth / 2 + ', ' + -1 * yRectHeight / 2 + ')');
+      this.$xFocusLine.attr('x1', xCoordinate).attr('x2', xCoordinate);
+      this.$yFocusLine.attr('y1', yCoordinate).attr('y2', yCoordinate);
+      this.requestStateUpdate({
+        open: Chart.getValueFormat()(open),
+        high: Chart.getValueFormat()(high),
+        low: Chart.getValueFormat()(low),
+        close: Chart.getValueFormat()(close)
+      });
+    }
+  }, {
+    key: 'handleMouseOver',
+    value: function handleMouseOver() {
+      if (!this.data.length) {
+        return;
+      }
+      this.$focusGroup.style('opacity', '1');
+      this.$xFocusLine.style('opacity', '1');
+      this.$yFocusLine.style('opacity', '1');
+    }
+  }, {
+    key: 'handleMouseOut',
+    value: function handleMouseOut() {
+      if (!this.data.length) {
+        return;
+      }
+      this.$focusGroup.style('opacity', '0');
+      this.$xFocusLine.style('opacity', '0');
+      this.$yFocusLine.style('opacity', '0');
+    }
+  }, {
+    key: 'renderLine',
+    value: function renderLine(isDay) {
+      var _this4 = this;
+
+      var dateExtent = d3.extent(this.data, function (_ref7) {
+        var date = _ref7.date;
+        return date;
+      });
+      var closeExtent = d3.extent(this.data, function (_ref8) {
+        var close = _ref8.close;
+        return close;
+      });
+      this.xScale.domain(dateExtent);
+      this.yScale.domain(closeExtent);
+      var xAxis = d3.axisBottom(this.xScale).tickFormat(Chart.getDateFormat(isDay));
+      var yAxis = d3.axisLeft(this.yScale).tickFormat(d3.format(',.0f'));
+      this.$xAxis.call(xAxis);
+      this.$yAxis.call(yAxis);
+      var line = d3.line().x(function (_ref9) {
+        var date = _ref9.date;
+        return _this4.xScale(date);
+      }).y(function (_ref10) {
+        var close = _ref10.close;
+        return _this4.yScale(close);
+      });
+      var area = d3.area().x(function (_ref11) {
+        var date = _ref11.date;
+        return _this4.xScale(date);
+      }).y0(this.height).y1(function (_ref12) {
+        var close = _ref12.close;
+        return _this4.yScale(close);
+      });
+      this.$linePath.datum(this.data).attr('d', line);
+      this.$lineArea.datum(this.data).style('fill', 'url(#areaGradient)').attr('d', area);
+    }
+  }, {
+    key: 'renderCandle',
+    value: function renderCandle(isDay) {
+      var _this5 = this;
+
+      var dateExtent = d3.extent(this.data, function (_ref13) {
+        var date = _ref13.date;
+        return date;
+      });
+      var dataRange = [-1, this.data.length];
+      var yMin = d3.min(this.data.map(function (d) {
+        return d.low;
+      }));
+      var yMax = d3.max(this.data.map(function (d) {
+        return d.high;
+      }));
+      this.xBand.domain(d3.range(dataRange[0], dataRange[1]));
+      this.xDateScale.domain(dateExtent);
+      this.xScale.domain(dataRange);
+      this.yScale.domain([yMin, yMax]);
+      var xAxis = d3.axisBottom(this.xDateScale).tickFormat(Chart.getDateFormat(isDay));
+      var yAxis = d3.axisLeft(this.yScale).tickFormat(d3.format(',.0f'));
+      this.$xAxis.call(xAxis);
+      this.$yAxis.call(yAxis);
+      this.$candleRects.data(this.data).enter().append('rect').attr('class', 'chart__candle-candle').attr('x', function (d, i) {
+        return _this5.xScale(i) - _this5.xBand.bandwidth();
+      }).attr('y', function (_ref14) {
+        var open = _ref14.open,
+            close = _ref14.close;
+        return _this5.yScale(Math.max(open, close));
+      }).attr('width', this.xBand.bandwidth()).attr('height', function (_ref15) {
+        var open = _ref15.open,
+            close = _ref15.close;
+        return open === close ? 1 : _this5.yScale(Math.min(open, close)) - _this5.yScale(Math.max(open, close));
+      }).attr('class', function (_ref16) {
+        var open = _ref16.open,
+            close = _ref16.close;
+        return open === close ? 'chart__candle_equal' : open > close ? 'chart__candle_higher' : 'chart__candle_lower';
+      });
+      this.$candleLines.data(this.data).enter().append('line').attr('class', 'chart__candle-stem').attr('x1', function (d, i) {
+        return _this5.xScale(i) - _this5.xBand.bandwidth() / 2;
+      }).attr('x2', function (d, i) {
+        return _this5.xScale(i) - _this5.xBand.bandwidth() / 2;
+      }).attr('y1', function (_ref17) {
+        var high = _ref17.high;
+        return _this5.yScale(high);
+      }).attr('y2', function (_ref18) {
+        var low = _ref18.low;
+        return _this5.yScale(low);
+      }).attr('class', function (_ref19) {
+        var open = _ref19.open,
+            close = _ref19.close;
+        return open === close ? 'chart__candle_equal' : open > close ? 'chart__candle_higher' : 'chart__candle_lower';
+      });
+    }
+  }, {
+    key: 'renderChart',
+    value: function renderChart(isDay) {
+      if (this.$mainGroup) {
+        console.warn('Chart is already rendered');
+        return;
+      }
+      var parentNode = this.$container.node().parentNode;
+      this.width = parentNode.clientWidth - this.marginLeft - this.marginRight;
+      this.height = parentNode.clientHeight - this.marginTop - this.marginBottom;
+      this.$mainGroup = this.$container.append('g').attr('class', 'chart__main-group').attr('transform', 'translate(' + this.marginLeft + ', ' + this.marginTop + ')');
+      /* axis */
+      this.xBand = d3.scaleBand().rangeRound([0, this.width]).padding(0.5);
+      this.xDateScale = d3.scaleTime().rangeRound([0, this.width]);
+      this.xScale = d3.scaleLinear().rangeRound([0, this.width]);
+      this.yScale = d3.scaleLinear().rangeRound([this.height, 0]);
+      var xAxis = d3.axisBottom(this.xScale).tickValues(null);
+      var yAxis = d3.axisLeft(this.yScale).tickValues(null);
+      this.$xAxis = this.$mainGroup.append('g').attr('class', 'chart__x-axis').attr('transform', 'translate(0, ' + this.height + ')').call(xAxis);
+      this.$yAxis = this.$mainGroup.append('g').attr('class', 'chart__y-axis').call(yAxis);
+      /* grid */
+      this.$mainGroup.append('g').attr('class', 'chart__grid').attr('transform', 'translate(0, ' + this.height + ')').call(xAxis.tickSize(-this.height).tickFormat(''));
+      this.$mainGroup.append('g').attr('class', 'chart__grid').call(yAxis.tickSize(-this.width).tickFormat(''));
+      /* focus */
+      this.$xFocusLine = this.$mainGroup.append('line').attr('class', 'chart__x-focus-line').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', this.height);
+      this.$yFocusLine = this.$mainGroup.append('line').attr('class', 'chart__y-focus-line').attr('x1', 0).attr('y1', this.height).attr('x2', this.width).attr('y2', this.height);
+      this.$focusGroup = this.$mainGroup.append('g').attr('class', 'chart__focus-group');
+      var xAxisHeight = this.$xAxis.node().getBBox().height;
+      this.$xFocusValueGroup = this.$focusGroup.append('g').attr('transform', 'translate(0, ' + (this.height + xAxisHeight) + ')');
+      this.$xFocusValueRect = this.$xFocusValueGroup.append('rect').attr('class', 'chart__focus-value-rect').attr('x', 0).attr('y', 0);
+      this.$xFocusValue = this.$xFocusValueGroup.append('text').attr('class', 'chart__focus-value').attr('x', 0).attr('y', 0);
+      var yAxisWidth = this.$yAxis.node().getBBox().width;
+      this.$yFocusValueGroup = this.$focusGroup.append('g').attr('transform', 'translate(' + -1 * yAxisWidth + ', 0)');
+      this.$yFocusValueRect = this.$yFocusValueGroup.append('rect').attr('class', 'chart__focus-value-rect').attr('x', 0).attr('y', 0);
+      this.$yFocusValue = this.$yFocusValueGroup.append('text').attr('class', 'chart__focus-value').attr('x', 0).attr('y', 0);
+      /* line */
+      var $areaGradient = this.$mainGroup.append('defs').append('linearGradient').attr('id', 'areaGradient').attr('x1', '0%').attr('y1', '0%').attr('x2', '0%').attr('y2', '100%');
+      $areaGradient.append('stop').attr('class', 'chart__area-gradient-stop').attr('offset', '0%').attr('stop-opacity', 0.6);
+      $areaGradient.append('stop').attr('class', 'chart__area-gradient-stop').attr('offset', '80%').attr('stop-opacity', 0);
+      this.$linePath = this.$mainGroup.append('path').attr('class', 'chart__line-path');
+      this.$lineArea = this.$mainGroup.append('path').attr('class', 'chart__line-area');
+      /* candle */
+      var $candleGroup = this.$mainGroup.append('g').attr('class', 'chart__candle-group');
+      this.$candleRects = $candleGroup.selectAll('.chart__candle-candle');
+      this.$candleLines = $candleGroup.selectAll('.chart__candle-stem');
+      /* focus overlay */
+      this.$focusOverlay = this.$mainGroup.append('rect').attr('class', 'chart__focus-overlay').attr('width', this.width).attr('height', this.height).on('mouseover', this.handleMouseOver.bind(isDay)).on('mouseout', this.handleMouseOut).on('mousemove', this.handleMouseMove);
+    }
+  }]);
+
+  return Chart;
+}();
+
+/*
+const renderLineChart = ($chart, rawData, state) => {
+  if (!rawData.length) {
     return;
   }
-  $d3Target.selectAll('input[type=radio]').on('change', handler);
-};
+  $chart.selectAll('*').remove();
+  const isDayPeriod = state.get('period') === '1d';
+  const valueFormat = d3.format(',.2f');
+  const dateFormat = isDayPeriod ? d3.timeFormat('%H:%M') : d3.timeFormat('%x');
+  const margin = { top: 20, right: 20, bottom: 40, left: 60 };
+  const width = +$chart.attr('width') - margin.left - margin.right;
+  const height = +$chart.attr('height') - margin.top - margin.bottom;
 
-var renderLineChart = function renderLineChart($chart) {
-  $chart.on('mousemove', point).on('mouseover', over).on('mouseleave', leave);
-  var margin = { top: 20, right: 20, bottom: 40, left: 40 };
-  var width = +$chart.attr('width') - margin.left - margin.right;
-  var height = +$chart.attr('height') - margin.top - margin.bottom;
-  var $group = $chart.append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-  var x = d3.scaleTime().rangeRound([0, width]);
-  var y = d3.scaleLinear().rangeRound([height, 0]);
-  var $line = d3.line().x(function (_ref6) {
-    var date = _ref6.date;
-    return x(date);
-  }).y(function (_ref7) {
-    var close = _ref7.close;
-    return y(close);
-  });
-  var $path = $group.append('path');
-  var $circle = $group.append('circle');
-  $group.append("g").attr("class", "grid").attr("transform", "translate(0," + height + ")").call(d3.axisBottom(x).ticks(5).tickSize(-height).tickFormat(""));
-  $group.append("g").attr("class", "grid").call(d3.axisLeft(y).ticks(5).tickSize(-width).tickFormat(""));
-  $group.append('g').attr('transform', 'translate(0,' + height + ')').call(d3.axisBottom(x));
-  $group.append('g').call(d3.axisLeft(y));
-  function point() {
-    var pathEl = $path.node();
-    var pathLength = pathEl.getTotalLength();
-    var _x = d3.mouse($group.node())[0];
-    var beginning = _x;
-    var end = pathLength;
-    var target = void 0;
-    var pos = void 0;
-    while (true) {
-      target = Math.floor((beginning + end) / 2);
-      pos = pathEl.getPointAtLength(target);
-      if ((target === end || target === beginning) && pos.x !== _x) {
-        break;
-      }
-      if (pos.x > _x) {
-        end = target;
-      } else if (pos.x < _x) {
-        beginning = target;
-      } else {
-        break;
-      }
-    }
-    $circle.attr('opacity', 1).attr('cx', _x).attr('cy', pos.y);
-  }
-  function over() {
-    $circle.transition().duration(200).style('opacity', '1');
-  }
-  function leave() {
-    $circle.transition().duration(200).style('opacity', '0');
-  }
-  return {
-    x: x,
-    y: y,
-    $line: $line,
-    $path: $path,
-    $circle: $circle
-  };
-};
+  const x = d3.scaleTime().rangeRound([0, width]);
+  const y = d3.scaleLinear().range([height, 0]);
+  const xAxis = d3.axisBottom(x).ticks(5, dateFormat);
+  const yAxis = d3.axisLeft(y).tickFormat(d3.format(',.0f'));
+  const line = d3.line()
+    .x(({ date }) => x(date))
+    .y(({ close, high }) => y(isDayPeriod ? high : close));
+  const area = d3.area()
+    .x(({ date }) => x(date))
+    .y0(height)
+    .y1(({ close, high }) => y(isDayPeriod ? high : close));
 
-var renderLinePath = function renderLinePath(_ref8, rawData) {
-  var x = _ref8.x,
-      y = _ref8.y,
-      $line = _ref8.$line,
-      $path = _ref8.$path,
-      $circle = _ref8.$circle;
+  const $group = $chart.append('g').attr('class', 'inner')
+    .attr('transform', `translate(${margin.left}, ${margin.top})`);
+  const $path = $group.append('path');
 
-  var data = rawData.map(function (item) {
-    item.date = item.minute ? d3.timeParse('%Y%m%d %H:%M')(item.date + ' ' + item.minute) : d3.timeParse('%Y-%m-%d')(item.date);
+  const data = rawData.map(item => {
+    item.date = isDayPeriod ?
+      d3.timeParse('%Y%m%d %H:%M')(`${item.date} ${item.minute}`) :
+      d3.timeParse('%Y-%m-%d')(item.date);
     return item;
   });
-  x.domain([data[0].date, data[data.length - 1].date]);
-  y.domain(d3.extent(data, function (_ref9) {
-    var close = _ref9.close;
-    return close;
-  }));
-  $path.datum(data).attr('fill', 'none').attr('stroke', 'steelblue').attr('stroke-linejoin', 'round').attr('stroke-linecap', 'round').attr('stroke-width', 1.5).attr('d', $line);
-  $circle.attr('r', 7).attr('fill', 'rgb(205,23,25)').style('opacity', '0').attr('pointer-events', 'none').attr('stroke-width', '2.5').attr('stroke', 'white');
+  x.domain(d3.extent(data, ({ date }) => date));
+  y.domain(d3.extent(data, ({ close, high }) => isDayPeriod ? high : close));
+
+  const $xAxis = $group.append('g').attr('class', 'xAxis')
+    .attr('transform', `translate(0, ${height})`).call(xAxis);
+  const $yAxis = $group.append('g').attr('class', 'yAxis')
+    .call(yAxis);
+
+  $group.append('g').attr('class', 'grid')
+    .attr('transform', `translate(0, ${height})`)
+    .call(xAxis.tickSize(-height).tickFormat(''));
+  $group.append('g').attr('class', 'grid')
+    .call(yAxis.tickSize(-width).tickFormat(''));
+
+  $path.datum(data).attr('class', 'linePath').attr('d', line);
+
+  const $xLine = $group.append('line')
+    .attr('x1', 0)
+    .attr('y1', 0)
+    .attr('x2', 0)
+    .attr('y2', height)
+    .attr('class', 'xLine');
+  const $yLine = $group.append('line')
+    .attr('x1', 0)
+    .attr('y1', height)
+    .attr('x2', width)
+    .attr('y2', height)
+    .attr('class', 'yLine');
+
+  const areaGradient = $group.append('defs')
+    .append('linearGradient')
+    .attr('id', 'areaGradient')
+    .attr('x1', '0%').attr('y1', '0%')
+    .attr('x2', '0%').attr('y2', '100%');
+  areaGradient.append('stop')
+    .attr('offset', '0%')
+    .attr('stop-color', '#21825C')
+    .attr('stop-opacity', 0.6);
+  areaGradient.append('stop')
+    .attr('offset', '80%')
+    .attr('stop-color', 'white')
+    .attr('stop-opacity', 0);
+  $group.append('path').attr('class', 'area')
+    .datum(data).style('fill', 'url(#areaGradient)').attr('d', area);
+
+  const bisectDate = d3.bisector(({ date }) => date).left;
+  const $focus = $group.append('g').attr('class', 'focus');
+  const xAxisHeight = $xAxis.node().getBBox().height;
+  const $xValueGroup = $focus.append('g').attr('transform', `translate(0, ${height + xAxisHeight})`);
+  const $xValueRect = $xValueGroup.append('rect').attr('class', 'focusValueRect').attr('x', 0).attr('y', 0);
+  const $xValue = $xValueGroup.append('text').attr('class', 'focusValue').attr('x', 0).attr('y', 0);
+  const yAxisWidth = $yAxis.node().getBBox().width;
+  const $yValueGroup = $focus.append('g').attr('transform', `translate(${-1 * yAxisWidth}, 0)`);
+  const $yValueRect = $yValueGroup.append('rect').attr('class', 'focusValueRect').attr('x', 0).attr('y', 0);
+  const $yValue = $yValueGroup.append('text').attr('class', 'focusValue').attr('x', 0).attr('y', 0);
+  $group.append('rect').attr('class', 'focusOverlay').attr('width', width).attr('height', height)
+    .on('mouseover', () => {
+      $focus.style('opacity', '1');
+      $xLine.style('opacity', '1');
+      $yLine.style('opacity', '1');
+    })
+    .on('mouseout', () => {
+      $focus.style('opacity', '0');
+      $xLine.style('opacity', '0');
+      $yLine.style('opacity', '0');
+    })
+    .on('mousemove', () => {
+      const [xCoordinate, yCoordinate] = d3.mouse($group.node());
+      const x0 = x.invert(xCoordinate);
+      const i = bisectDate(data, x0, 1);
+      const d0 = data[i - 1];
+      const d1 = data[i];
+      const d = x0 - d0.date > d1.date - x0 ? d1 : d0;
+
+      $xValue.text(dateFormat(d.date));
+      const { width: xValueWidth, height: xValueHeight } = $xValue.node().getBBox();
+      const xRectWidth = xValueWidth + 12;
+      const xRectHeight = xValueHeight + 8;
+      $xValueGroup.attr('transform', `translate(${xCoordinate}, ${height + xRectHeight / 2})`);
+      $xValueRect.attr('width', xRectWidth).attr('height', xRectHeight)
+        .attr('transform', `translate(${-1 * xRectWidth / 2}, ${-1 * xRectHeight / 2})`);
+
+      $yValue.text(valueFormat(isDayPeriod ? d.high : d.close));
+      const { width: yValueWidth, height: yValueHeight } = $yValue.node().getBBox();
+      const yRectWidth = yValueWidth + 12;
+      const yRectHeight = yValueHeight + 8;
+      $yValueGroup.attr('transform', `translate(${-1 * yRectWidth / 2}, ${yCoordinate})`);
+      $yValueRect.attr('width', yRectWidth).attr('height', yRectHeight)
+        .attr('transform', `translate(${-1 * yRectWidth / 2}, ${-1 * yRectHeight / 2})`);
+
+      $xLine.attr('x1', xCoordinate).attr('x2', xCoordinate);
+      $yLine.attr('y1', yCoordinate).attr('y2', yCoordinate);
+
+      state.update('open', valueFormat(d.open));
+      state.update('high', valueFormat(d.high));
+      state.update('low', valueFormat(d.low));
+      state.update('close', valueFormat(d.close));
+    });
 };
+*/
+/*
+const renderCandleChart = ($chart, rawData, state) => {
+  if (!rawData.length) {
+    return;
+  }
+  $chart.selectAll('*').remove();
+  const isDayPeriod = state.get('period') === '1d';
+  const valueFormat = d3.format(',.2f');
+  const dateFormat = isDayPeriod ? d3.timeFormat('%H:%M') : d3.timeFormat('%d.%m.%y');
+  const bisectDate = d3.bisector(({ date }) => date).left;
+  const margin = { top: 20, right: 20, bottom: 40, left: 60 };
+  const width = +$chart.attr('width') - margin.left - margin.right;
+  const height = +$chart.attr('height') - margin.top - margin.bottom;
+
+  const $group = $chart.append('g').attr('class', 'inner')
+    .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+  const datesList = [];
+  const data = rawData.map(item => {
+    item.date = isDayPeriod ?
+      d3.timeParse('%Y%m%d %H:%M')(`${item.date} ${item.minute}`) :
+      d3.timeParse('%Y-%m-%d')(item.date);
+    datesList.push(item.date);
+    return item;
+  });
+
+  const dateExtent = d3.extent(data, ({ date }) => date);
+  const xDateScale = d3.scaleTime().domain(dateExtent).rangeRound([0, width]);
+  const xScale = d3.scaleLinear().domain([-1, datesList.length]).rangeRound([0, width]);
+  const xBand = d3.scaleBand().domain(d3.range(-1, datesList.length)).rangeRound([0, width]).padding(0.5);
+  const xAxis = d3.axisBottom(xDateScale).ticks(5, dateFormat);
+
+  const yMin = d3.min(data.map(d => d.low));
+  const yMax = d3.max(data.map(d => d.high));
+  const yScale = d3.scaleLinear().domain([yMin, yMax]).rangeRound([height, 0]).nice();
+  const yAxis = d3.axisLeft(yScale).tickFormat(d3.format(',.0f'));
+
+  const $xAxis = $group.append('g').attr('class', 'xAxis')
+    .attr('transform', `translate(0, ${height})`).call(xAxis);
+  const $yAxis = $group.append('g').attr('class', 'yAxis')
+    .call(yAxis);
+
+  $group.append('g').attr('class', 'grid')
+    .attr('transform', `translate(0, ${height})`)
+    .call(xAxis.tickSize(-height).tickFormat(''));
+  $group.append('g').attr('class', 'grid')
+    .call(yAxis.tickSize(-width).tickFormat(''));
+
+  const $candleGroup = $group.append('g').attr('class', 'candleGroup');
+  $candleGroup.selectAll('.candle').data(data).enter()
+    .append('rect').attr('class', 'candle')
+    .attr('x', (d, i) => xScale(i) - xBand.bandwidth())
+    .attr('y', ({ open, close }) => yScale(Math.max(open, close)))
+    .attr('width', xBand.bandwidth())
+    .attr('height', ({ open, close }) => (open === close) ?
+      1 :
+      yScale(Math.min(open, close)) - yScale(Math.max(open, close))
+    )
+    .attr('class', ({ open, close }) => (open === close) ?
+      'equal' :
+      (open > close) ?
+        'higher' :
+        'lower'
+    );
+  $candleGroup.selectAll('.stem').data(data).enter()
+    .append('line').attr('class', 'stem')
+    .attr('x1', (d, i) => xScale(i) - xBand.bandwidth() / 2)
+    .attr('x2', (d, i) => xScale(i) - xBand.bandwidth() / 2)
+    .attr('y1', ({ high }) => yScale(high))
+    .attr('y2', ({ low }) => yScale(low))
+    .attr('class', ({ open, close }) => (open === close) ?
+      'equal' :
+      (open > close) ?
+        'higher' :
+        'lower'
+    );
+
+  const $xLine = $group.append('line')
+    .attr('x1', 0)
+    .attr('y1', 0)
+    .attr('x2', 0)
+    .attr('y2', height)
+    .attr('class', 'xLine');
+  const $yLine = $group.append('line')
+    .attr('x1', 0)
+    .attr('y1', height)
+    .attr('x2', width)
+    .attr('y2', height)
+    .attr('class', 'yLine');
+
+  const $focus = $group.append('g').attr('class', 'focus');
+  const xAxisHeight = $xAxis.node().getBBox().height;
+  const $xValueGroup = $focus.append('g').attr('transform', `translate(0, ${height + xAxisHeight})`);
+  const $xValueRect = $xValueGroup.append('rect').attr('class', 'focusValueRect').attr('x', 0).attr('y', 0);
+  const $xValue = $xValueGroup.append('text').attr('class', 'focusValue').attr('x', 0).attr('y', 0);
+  const yAxisWidth = $yAxis.node().getBBox().width;
+  const $yValueGroup = $focus.append('g').attr('transform', `translate(${-1 * yAxisWidth}, 0)`);
+  const $yValueRect = $yValueGroup.append('rect').attr('class', 'focusValueRect').attr('x', 0).attr('y', 0);
+  const $yValue = $yValueGroup.append('text').attr('class', 'focusValue').attr('x', 0).attr('y', 0);
+  $group.append('rect').attr('class', 'focusOverlay').attr('width', width).attr('height', height)
+    .on('mouseover', () => {
+      $focus.style('opacity', '1');
+      $xLine.style('opacity', '1');
+      $yLine.style('opacity', '1');
+    })
+    .on('mouseout', () => {
+      $focus.style('opacity', '0');
+      $xLine.style('opacity', '0');
+      $yLine.style('opacity', '0');
+    })
+    .on('mousemove', () => {
+      const [xCoordinate, yCoordinate] = d3.mouse($focus.node());
+      const xDate = xDateScale.invert(xCoordinate);
+      const i = bisectDate(data, xDate, 1);
+      const dataItemPrev = data[i - 1];
+      const dataItem = data[i];
+      const coordinateData = xDate - dataItemPrev.date > dataItem.date - xDate ?
+        dataItem :
+        dataItemPrev;
+      const {date, open, high, low, close } = coordinateData;
+
+      $xValue.text(dateFormat(date));
+      const { width: xValueWidth, height: xValueHeight } = $xValue.node().getBBox();
+      const xRectWidth = xValueWidth + 12;
+      const xRectHeight = xValueHeight + 8;
+      $xValueGroup.attr('transform', `translate(${xCoordinate}, ${height + xRectHeight / 2})`);
+      $xValueRect.attr('width', xRectWidth).attr('height', xRectHeight)
+        .attr('transform', `translate(${-1 * xRectWidth / 2}, ${-1 * xRectHeight / 2})`);
+
+      $yValue.text(valueFormat(isDayPeriod ? high : close));
+      const { width: yValueWidth, height: yValueHeight } = $yValue.node().getBBox();
+      const yRectWidth = yValueWidth + 12;
+      const yRectHeight = yValueHeight + 8;
+      $yValueGroup.attr('transform', `translate(${-1 * yRectWidth / 2}, ${yCoordinate})`);
+      $yValueRect.attr('width', yRectWidth).attr('height', yRectHeight)
+        .attr('transform', `translate(${-1 * yRectWidth / 2}, ${-1 * yRectHeight / 2})`);
+
+      $xLine.attr('x1', xCoordinate).attr('x2', xCoordinate);
+      $yLine.attr('y1', yCoordinate).attr('y2', yCoordinate);
+
+      state.update('open', valueFormat(open));
+      state.update('high', valueFormat(high));
+      state.update('low', valueFormat(low));
+      state.update('close', valueFormat(close));
+    });
+};
+*/
 
 var init = function () {
-  var _ref10 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var state, $title, $symbol, $open, $high, $low, $close, $container, $period, $type, chartMeta;
+  var _ref20 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+    var $title, $symbol, $open, $high, $low, $close, $container, $period, $type, state, isPeriodOneDay, chart;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             d3.timeFormatDefaultLocale(ruTimeLocale);
-            state = new State({
-              symbol: 'aapl',
-              open: '-',
-              high: '-',
-              low: '-',
-              close: '-',
-              period: '6m',
-              type: 'line',
-              stocksData: []
-            });
             $title = d3.select('#chart__title');
             $symbol = d3.select('#chart__symbol');
             $open = d3.select('#chart__open');
@@ -33436,31 +33919,58 @@ var init = function () {
             $container = d3.select('#chart__container');
             $period = d3.select('#chart__period');
             $type = d3.select('#chart__type');
-            chartMeta = renderLineChart($container);
+            state = new State({
+              symbol: 'aapl',
+              open: '-',
+              high: '-',
+              low: '-',
+              close: '-',
+              period: '1m',
+              type: 'candle',
+              stocksData: []
+            });
 
+            isPeriodOneDay = function isPeriodOneDay() {
+              return state.get('period') === '1d';
+            };
+
+            chart = new Chart({
+              $container: $container,
+              requestStateUpdate: function requestStateUpdate(nextState) {
+                Object.entries(nextState).forEach(function (_ref21) {
+                  var _ref22 = _slicedToArray(_ref21, 2),
+                      name = _ref22[0],
+                      value = _ref22[1];
+
+                  return state.update(name, value);
+                });
+              }
+            });
+
+            chart.renderChart(isPeriodOneDay());
             listenRadioGroupChanges($symbol, function () {
               var value = this.value;
 
               state.update('symbol', value);
-            });
+            }, state.get('symbol'));
             listenRadioGroupChanges($period, function () {
               var value = this.value;
 
               state.update('period', value);
-            });
+            }, state.get('period'));
             listenRadioGroupChanges($type, function () {
               var value = this.value;
 
               state.update('type', value);
-            });
+            }, state.get('type'));
             state.subscribe('symbol', function () {
-              var _ref11 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(value) {
+              var _ref23 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(value) {
                 var period, stocksData;
                 return regeneratorRuntime.wrap(function _callee2$(_context2) {
                   while (1) {
                     switch (_context2.prev = _context2.next) {
                       case 0:
-                        $title.text(value.toUpperCase() + ' \u0433\u0440\u0430\u0444\u0438\u043A \u0430\u043A\u0446\u0438\u0439');
+                        $title.text('\u0413\u0440\u0430\u0444\u0438\u043A \u0430\u043A\u0446\u0438\u0439 ' + value.toUpperCase());
                         period = state.get('period');
                         _context2.next = 4;
                         return fetchStockData(value, period);
@@ -33478,12 +33988,12 @@ var init = function () {
                 }, _callee2, _this);
               }));
 
-              return function (_x5) {
-                return _ref11.apply(this, arguments);
+              return function (_x4) {
+                return _ref23.apply(this, arguments);
               };
             }());
             state.subscribe('period', function () {
-              var _ref12 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(value) {
+              var _ref24 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(value) {
                 var symbol, stocksData;
                 return regeneratorRuntime.wrap(function _callee3$(_context3) {
                   while (1) {
@@ -33506,8 +34016,8 @@ var init = function () {
                 }, _callee3, _this);
               }));
 
-              return function (_x6) {
-                return _ref12.apply(this, arguments);
+              return function (_x5) {
+                return _ref24.apply(this, arguments);
               };
             }());
             state.subscribe('open', function (value) {
@@ -33523,11 +34033,18 @@ var init = function () {
               $close.text(value);
             });
             state.subscribe('stocksData', function (value) {
-              renderLinePath(chartMeta, value);
+              var type = state.get('type');
+              var isDay = isPeriodOneDay();
+              chart.updateData(value);
+              type === 'line' ? chart.renderLine(isDay) : chart.renderCandle(isDay);
+            });
+            state.subscribe('type', function (value) {
+              var isDay = isPeriodOneDay();
+              value === 'line' ? chart.renderLine(isDay) : chart.renderCandle(isDay);
             });
             state.callAllSubscribers();
 
-          case 23:
+          case 26:
           case 'end':
             return _context4.stop();
         }
@@ -33536,7 +34053,7 @@ var init = function () {
   }));
 
   return function init() {
-    return _ref10.apply(this, arguments);
+    return _ref20.apply(this, arguments);
   };
 }();
 
@@ -33570,252 +34087,6 @@ _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
     }
   }, _callee5, _this, [[0, 7]]);
 }))();
-
-function displayAll() {
-  displayCS();
-  displayGen(genData.length - 1);
-}
-
-function displayCS() {
-  var chart = cschart().Bheight(460);
-  d3.select('#chart1').call(chart);
-  var chart = barchart().mname('volume').margin(320).MValue('TURNOVER');
-  d3.select('#chart1').datum(genData).call(chart);
-  var chart = barchart().mname('sigma').margin(400).MValue('VOLATILITY');
-  d3.select('#chart1').datum(genData).call(chart);
-  hoverAll();
-}
-
-function hoverAll() {
-  d3.select('#chart1').select('.bands').selectAll('rect').on('mouseover', function (d, i) {
-    d3.select(this).classed('hoved', true);
-    d3.select('.stick' + i).classed('hoved', true);
-    d3.select('.candle' + i).classed('hoved', true);
-    d3.select('.volume' + i).classed('hoved', true);
-    d3.select('.sigma' + i).classed('hoved', true);
-    displayGen(i);
-  }).on('mouseout', function (d, i) {
-    d3.select(this).classed('hoved', false);
-    d3.select('.stick' + i).classed('hoved', false);
-    d3.select('.candle' + i).classed('hoved', false);
-    d3.select('.volume' + i).classed('hoved', false);
-    d3.select('.sigma' + i).classed('hoved', false);
-    displayGen(genData.length - 1);
-  });
-}
-
-function displayGen(mark) {
-  var header = csheader();
-  d3.select('#infobar').datum(genData.slice(mark)[0]).call(header);
-}
-
-function cschart() {
-
-  var margin = { top: 0, right: 30, bottom: 40, left: 5 },
-      width = 620,
-      height = 300,
-      Bheight = 460;
-
-  function csrender(selection) {
-    selection.each(function () {
-
-      var interval = TIntervals[TPeriod];
-
-      var minimal = d3.min(genData, function (d) {
-        return d.LOW;
-      });
-      var maximal = d3.max(genData, function (d) {
-        return d.HIGH;
-      });
-
-      var extRight = width + margin.right;
-      var x = d3.scale.ordinal().rangeBands([0, width]);
-
-      var y = d3.scale.linear().rangeRound([height, 0]);
-
-      var xAxis = d3.svg.axis().scale(x).tickFormat(d3.time.format(TFormat[interval]));
-
-      var yAxis = d3.svg.axis().scale(y).ticks(Math.floor(height / 50));
-
-      x.domain(genData.map(function (d) {
-        return d.TIMESTAMP;
-      }));
-      y.domain([minimal, maximal]).nice();
-
-      var xtickdelta = Math.ceil(60 / (width / genData.length));
-      xAxis.tickValues(x.domain().filter(function (d, i) {
-        return !((i + Math.floor(xtickdelta / 2)) % xtickdelta);
-      }));
-
-      var barwidth = x.rangeBand();
-      var candlewidth = Math.floor(d3.min([barwidth * 0.8, 13]) / 2) * 2 + 1;
-      var delta = Math.round((barwidth - candlewidth) / 2);
-
-      d3.select(this).select('svg').remove();
-      var svg = d3.select(this).append('svg').attr('width', width + margin.left + margin.right).attr('height', Bheight + margin.top + margin.bottom).append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-      svg.append('g').attr('class', 'axis xaxis').attr('transform', 'translate(0,' + height + ')').call(xAxis.orient('bottom').outerTickSize(0));
-
-      svg.append('g').attr('class', 'axis yaxis').attr('transform', 'translate(' + width + ',0)').call(yAxis.orient('right').tickSize(0));
-
-      svg.append('g').attr('class', 'axis grid').attr('transform', 'translate(' + width + ',0)').call(yAxis.orient('left').tickFormat('').tickSize(width).outerTickSize(0));
-
-      var bands = svg.selectAll('.bands').data([genData]).enter().append('g').attr('class', 'bands');
-
-      bands.selectAll('rect').data(function (d) {
-        return d;
-      }).enter().append('rect').attr('x', function (d) {
-        return x(d.TIMESTAMP) + Math.floor(barwidth / 2);
-      }).attr('y', 0).attr('height', Bheight).attr('width', 1).attr('class', function (d, i) {
-        return 'band' + i;
-      }).style('stroke-width', Math.floor(barwidth));
-
-      var stick = svg.selectAll('.sticks').data([genData]).enter().append('g').attr('class', 'sticks');
-
-      stick.selectAll('rect').data(function (d) {
-        return d;
-      }).enter().append('rect').attr('x', function (d) {
-        return x(d.TIMESTAMP) + Math.floor(barwidth / 2);
-      }).attr('y', function (d) {
-        return y(d.HIGH);
-      }).attr('class', function (d, i) {
-        return 'stick' + i;
-      }).attr('height', function (d) {
-        return y(d.LOW) - y(d.HIGH);
-      }).attr('width', 1).classed('rise', function (d) {
-        return d.CLOSE > d.OPEN;
-      }).classed('fall', function (d) {
-        return d.OPEN > d.CLOSE;
-      });
-
-      var candle = svg.selectAll('.candles').data([genData]).enter().append('g').attr('class', 'candles');
-
-      candle.selectAll('rect').data(function (d) {
-        return d;
-      }).enter().append('rect').attr('x', function (d) {
-        return x(d.TIMESTAMP) + delta;
-      }).attr('y', function (d) {
-        return y(d3.max([d.OPEN, d.CLOSE]));
-      }).attr('class', function (d, i) {
-        return 'candle' + i;
-      }).attr('height', function (d) {
-        return y(d3.min([d.OPEN, d.CLOSE])) - y(d3.max([d.OPEN, d.CLOSE]));
-      }).attr('width', candlewidth).classed('rise', function (d) {
-        return d.CLOSE > d.OPEN;
-      }).classed('fall', function (d) {
-        return d.OPEN > d.CLOSE;
-      });
-    });
-  } // csrender
-
-  csrender.Bheight = function (value) {
-    if (!arguments.length) return Bheight;
-    Bheight = value;
-    return csrender;
-  };
-
-  return csrender;
-} // cschart
-
-function barchart() {
-
-  var margin = { top: 300, right: 30, bottom: 10, left: 5 },
-      width = 620,
-      height = 60,
-      mname = 'mbar1';
-
-  var MValue = 'TURNOVER';
-
-  function barrender(selection) {
-    selection.each(function (data) {
-
-      var x = d3.scale.ordinal().rangeBands([0, width]);
-
-      var y = d3.scale.linear().rangeRound([height, 0]);
-
-      var xAxis = d3.svg.axis().scale(x).tickFormat(d3.time.format(TFormat[TIntervals[TPeriod]]));
-
-      var yAxis = d3.svg.axis().scale(y).ticks(Math.floor(height / 50));
-
-      var svg = d3.select(this).select('svg').append('g').attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-      x.domain(data.map(function (d) {
-        return d.TIMESTAMP;
-      }));
-      y.domain([0, d3.max(data, function (d) {
-        return d[MValue];
-      })]).nice();
-
-      var xtickdelta = Math.ceil(60 / (width / data.length));
-      xAxis.tickValues(x.domain().filter(function (d, i) {
-        return !((i + Math.floor(xtickdelta / 2)) % xtickdelta);
-      }));
-
-      svg.append('g').attr('class', 'axis yaxis').attr('transform', 'translate(' + width + ',0)').call(yAxis.orient('right').tickFormat('').tickSize(0));
-
-      //      svg.append("g")
-      //          .attr("class", "axis yaxis")
-      //          .attr("transform", "translate(0,0)")
-      //          .call(yAxis.orient("left"));
-
-      var barwidth = x.rangeBand();
-      var fillwidth = Math.floor(barwidth * 0.9) / 2 * 2 + 1;
-      var bardelta = Math.round((barwidth - fillwidth) / 2);
-
-      var mbar = svg.selectAll('.' + mname + 'bar').data([data]).enter().append('g').attr('class', mname + 'bar');
-
-      mbar.selectAll('rect').data(function (d) {
-        return d;
-      }).enter().append('rect').attr('class', mname + 'fill').attr('x', function (d) {
-        return x(d.TIMESTAMP) + bardelta;
-      }).attr('y', function (d) {
-        return y(d[MValue]);
-      }).attr('class', function (d, i) {
-        return mname + i;
-      }).attr('height', function (d) {
-        return y(0) - y(d[MValue]);
-      }).attr('width', fillwidth);
-    });
-  } // barrender
-  barrender.mname = function (value) {
-    if (!arguments.length) return mname;
-    mname = value;
-    return barrender;
-  };
-
-  barrender.margin = function (value) {
-    if (!arguments.length) return margin.top;
-    margin.top = value;
-    return barrender;
-  };
-
-  barrender.MValue = function (value) {
-    if (!arguments.length) return MValue;
-    MValue = value;
-    return barrender;
-  };
-
-  return barrender;
-} // barchart
-
-function csheader() {
-
-  function cshrender(selection) {
-    selection.each(function (data) {
-
-      var interval = TIntervals[TPeriod];
-      var format = interval == 'month' ? d3.time.format('%b %Y') : d3.time.format('%b %d %Y');
-      var dateprefix = interval == 'month' ? 'Month of ' : interval == 'week' ? 'Week of ' : '';
-      d3.select('#infodate').text(dateprefix + format(data.TIMESTAMP));
-      d3.select('#infoopen').text('O ' + data.OPEN);
-      d3.select('#infohigh').text('H ' + data.HIGH);
-      d3.select('#infolow').text('L ' + data.LOW);
-      d3.select('#infoclose').text('C ' + data.CLOSE);
-    });
-  } // cshrender
-
-  return cshrender;
-} // csheader
 },{"core-js/modules/es6.typed.array-buffer":"../node_modules/core-js/modules/es6.typed.array-buffer.js","core-js/modules/es6.typed.int8-array":"../node_modules/core-js/modules/es6.typed.int8-array.js","core-js/modules/es6.typed.uint8-array":"../node_modules/core-js/modules/es6.typed.uint8-array.js","core-js/modules/es6.typed.uint8-clamped-array":"../node_modules/core-js/modules/es6.typed.uint8-clamped-array.js","core-js/modules/es6.typed.int16-array":"../node_modules/core-js/modules/es6.typed.int16-array.js","core-js/modules/es6.typed.uint16-array":"../node_modules/core-js/modules/es6.typed.uint16-array.js","core-js/modules/es6.typed.int32-array":"../node_modules/core-js/modules/es6.typed.int32-array.js","core-js/modules/es6.typed.uint32-array":"../node_modules/core-js/modules/es6.typed.uint32-array.js","core-js/modules/es6.typed.float32-array":"../node_modules/core-js/modules/es6.typed.float32-array.js","core-js/modules/es6.typed.float64-array":"../node_modules/core-js/modules/es6.typed.float64-array.js","core-js/modules/es6.map":"../node_modules/core-js/modules/es6.map.js","core-js/modules/es6.set":"../node_modules/core-js/modules/es6.set.js","core-js/modules/es6.weak-map":"../node_modules/core-js/modules/es6.weak-map.js","core-js/modules/es6.weak-set":"../node_modules/core-js/modules/es6.weak-set.js","core-js/modules/es6.reflect.apply":"../node_modules/core-js/modules/es6.reflect.apply.js","core-js/modules/es6.reflect.construct":"../node_modules/core-js/modules/es6.reflect.construct.js","core-js/modules/es6.reflect.define-property":"../node_modules/core-js/modules/es6.reflect.define-property.js","core-js/modules/es6.reflect.delete-property":"../node_modules/core-js/modules/es6.reflect.delete-property.js","core-js/modules/es6.reflect.get":"../node_modules/core-js/modules/es6.reflect.get.js","core-js/modules/es6.reflect.get-own-property-descriptor":"../node_modules/core-js/modules/es6.reflect.get-own-property-descriptor.js","core-js/modules/es6.reflect.get-prototype-of":"../node_modules/core-js/modules/es6.reflect.get-prototype-of.js","core-js/modules/es6.reflect.has":"../node_modules/core-js/modules/es6.reflect.has.js","core-js/modules/es6.reflect.is-extensible":"../node_modules/core-js/modules/es6.reflect.is-extensible.js","core-js/modules/es6.reflect.own-keys":"../node_modules/core-js/modules/es6.reflect.own-keys.js","core-js/modules/es6.reflect.prevent-extensions":"../node_modules/core-js/modules/es6.reflect.prevent-extensions.js","core-js/modules/es6.reflect.set":"../node_modules/core-js/modules/es6.reflect.set.js","core-js/modules/es6.reflect.set-prototype-of":"../node_modules/core-js/modules/es6.reflect.set-prototype-of.js","core-js/modules/es6.promise":"../node_modules/core-js/modules/es6.promise.js","core-js/modules/es6.symbol":"../node_modules/core-js/modules/es6.symbol.js","core-js/modules/es6.object.freeze":"../node_modules/core-js/modules/es6.object.freeze.js","core-js/modules/es6.object.seal":"../node_modules/core-js/modules/es6.object.seal.js","core-js/modules/es6.object.prevent-extensions":"../node_modules/core-js/modules/es6.object.prevent-extensions.js","core-js/modules/es6.object.is-frozen":"../node_modules/core-js/modules/es6.object.is-frozen.js","core-js/modules/es6.object.is-sealed":"../node_modules/core-js/modules/es6.object.is-sealed.js","core-js/modules/es6.object.is-extensible":"../node_modules/core-js/modules/es6.object.is-extensible.js","core-js/modules/es6.object.get-own-property-descriptor":"../node_modules/core-js/modules/es6.object.get-own-property-descriptor.js","core-js/modules/es6.object.get-prototype-of":"../node_modules/core-js/modules/es6.object.get-prototype-of.js","core-js/modules/es6.object.keys":"../node_modules/core-js/modules/es6.object.keys.js","core-js/modules/es6.object.get-own-property-names":"../node_modules/core-js/modules/es6.object.get-own-property-names.js","core-js/modules/es6.object.assign":"../node_modules/core-js/modules/es6.object.assign.js","core-js/modules/es6.object.is":"../node_modules/core-js/modules/es6.object.is.js","core-js/modules/es6.object.set-prototype-of":"../node_modules/core-js/modules/es6.object.set-prototype-of.js","core-js/modules/es6.function.name":"../node_modules/core-js/modules/es6.function.name.js","core-js/modules/es6.string.raw":"../node_modules/core-js/modules/es6.string.raw.js","core-js/modules/es6.string.from-code-point":"../node_modules/core-js/modules/es6.string.from-code-point.js","core-js/modules/es6.string.code-point-at":"../node_modules/core-js/modules/es6.string.code-point-at.js","core-js/modules/es6.string.repeat":"../node_modules/core-js/modules/es6.string.repeat.js","core-js/modules/es6.string.starts-with":"../node_modules/core-js/modules/es6.string.starts-with.js","core-js/modules/es6.string.ends-with":"../node_modules/core-js/modules/es6.string.ends-with.js","core-js/modules/es6.string.includes":"../node_modules/core-js/modules/es6.string.includes.js","core-js/modules/es6.regexp.flags":"../node_modules/core-js/modules/es6.regexp.flags.js","core-js/modules/es6.regexp.match":"../node_modules/core-js/modules/es6.regexp.match.js","core-js/modules/es6.regexp.replace":"../node_modules/core-js/modules/es6.regexp.replace.js","core-js/modules/es6.regexp.split":"../node_modules/core-js/modules/es6.regexp.split.js","core-js/modules/es6.regexp.search":"../node_modules/core-js/modules/es6.regexp.search.js","core-js/modules/es6.array.from":"../node_modules/core-js/modules/es6.array.from.js","core-js/modules/es6.array.of":"../node_modules/core-js/modules/es6.array.of.js","core-js/modules/es6.array.copy-within":"../node_modules/core-js/modules/es6.array.copy-within.js","core-js/modules/es6.array.find":"../node_modules/core-js/modules/es6.array.find.js","core-js/modules/es6.array.find-index":"../node_modules/core-js/modules/es6.array.find-index.js","core-js/modules/es6.array.fill":"../node_modules/core-js/modules/es6.array.fill.js","core-js/modules/es6.array.iterator":"../node_modules/core-js/modules/es6.array.iterator.js","core-js/modules/es6.number.is-finite":"../node_modules/core-js/modules/es6.number.is-finite.js","core-js/modules/es6.number.is-integer":"../node_modules/core-js/modules/es6.number.is-integer.js","core-js/modules/es6.number.is-safe-integer":"../node_modules/core-js/modules/es6.number.is-safe-integer.js","core-js/modules/es6.number.is-nan":"../node_modules/core-js/modules/es6.number.is-nan.js","core-js/modules/es6.number.epsilon":"../node_modules/core-js/modules/es6.number.epsilon.js","core-js/modules/es6.number.min-safe-integer":"../node_modules/core-js/modules/es6.number.min-safe-integer.js","core-js/modules/es6.number.max-safe-integer":"../node_modules/core-js/modules/es6.number.max-safe-integer.js","core-js/modules/es6.math.acosh":"../node_modules/core-js/modules/es6.math.acosh.js","core-js/modules/es6.math.asinh":"../node_modules/core-js/modules/es6.math.asinh.js","core-js/modules/es6.math.atanh":"../node_modules/core-js/modules/es6.math.atanh.js","core-js/modules/es6.math.cbrt":"../node_modules/core-js/modules/es6.math.cbrt.js","core-js/modules/es6.math.clz32":"../node_modules/core-js/modules/es6.math.clz32.js","core-js/modules/es6.math.cosh":"../node_modules/core-js/modules/es6.math.cosh.js","core-js/modules/es6.math.expm1":"../node_modules/core-js/modules/es6.math.expm1.js","core-js/modules/es6.math.fround":"../node_modules/core-js/modules/es6.math.fround.js","core-js/modules/es6.math.hypot":"../node_modules/core-js/modules/es6.math.hypot.js","core-js/modules/es6.math.imul":"../node_modules/core-js/modules/es6.math.imul.js","core-js/modules/es6.math.log1p":"../node_modules/core-js/modules/es6.math.log1p.js","core-js/modules/es6.math.log10":"../node_modules/core-js/modules/es6.math.log10.js","core-js/modules/es6.math.log2":"../node_modules/core-js/modules/es6.math.log2.js","core-js/modules/es6.math.sign":"../node_modules/core-js/modules/es6.math.sign.js","core-js/modules/es6.math.sinh":"../node_modules/core-js/modules/es6.math.sinh.js","core-js/modules/es6.math.tanh":"../node_modules/core-js/modules/es6.math.tanh.js","core-js/modules/es6.math.trunc":"../node_modules/core-js/modules/es6.math.trunc.js","core-js/modules/es7.array.includes":"../node_modules/core-js/modules/es7.array.includes.js","core-js/modules/es7.object.values":"../node_modules/core-js/modules/es7.object.values.js","core-js/modules/es7.object.entries":"../node_modules/core-js/modules/es7.object.entries.js","core-js/modules/es7.object.get-own-property-descriptors":"../node_modules/core-js/modules/es7.object.get-own-property-descriptors.js","core-js/modules/es7.string.pad-start":"../node_modules/core-js/modules/es7.string.pad-start.js","core-js/modules/es7.string.pad-end":"../node_modules/core-js/modules/es7.string.pad-end.js","core-js/modules/web.timers":"../node_modules/core-js/modules/web.timers.js","core-js/modules/web.immediate":"../node_modules/core-js/modules/web.immediate.js","core-js/modules/web.dom.iterable":"../node_modules/core-js/modules/web.dom.iterable.js","regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","d3":"../node_modules/d3/index.js","d3-time-format/locale/ru-RU":"../node_modules/d3-time-format/locale/ru-RU.json"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -33845,7 +34116,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '52337' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '63025' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 

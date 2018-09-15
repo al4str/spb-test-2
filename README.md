@@ -1,5 +1,4 @@
-https://iextrading.com/developer/docs/#chart
-https://github.com/d3/d3/blob/master/API.md
+
 ## Markup
 
 `./docs/`
