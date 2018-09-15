@@ -7,6 +7,8 @@
 - current value
 - animation
 - refactor (svelte?)
+- candle 1d take average
+- isDay to this and separate outer update method
 
 test task
 https://docs.google.com/document/d/1h1217Om_XX21qtlZzbPNlEbXWGvqXnWLve423Vl00tE/edit

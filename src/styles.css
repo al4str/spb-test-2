@@ -100,6 +100,8 @@ body {
 }
 .chart__container {
   display: block;
+  width: 1000px;
+  height: 700px;
   user-select: none;
 }
 .chart__footer {
@@ -163,11 +165,20 @@ body {
   stroke-linejoin: round;
   stroke-linecap: round;
   stroke-width: 2px;
+  transition: opacity 0.3s;
 }
-.chart__line-area {}
-.chart__candle-group {}
-.chart__candle-candle {}
-.chart__candle-stem {}
+.chart__line-area {
+  transition: opacity 0.3s;
+}
+.chart__candle-group {
+  transition: opacity 0.3s;
+}
+.chart__candle-candle {
+  transition: opacity 0.3s;
+}
+.chart__candle-stem {
+  transition: opacity 0.3s;
+}
 .chart__candle_equal {
   fill: rgba(255, 255, 255, 0.6);
   stroke: rgba(255, 255, 255, 0.6);

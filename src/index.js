@@ -8,16 +8,20 @@ const documentReady = () => new Promise((resolve) => {
     window.addEventListener('load', resolve, true);
 });
 
+let isFetching = false;
 const fetchStockData = async (symbol, period) => {
-  if (!symbol || !period) {
-    return null;
+  if (isFetching) {
+    return;
   }
+  isFetching = true;
   try {
     const url = `https://api.iextrading.com/1.0/stock/${symbol}/chart/${period}`;
     return await d3.json(url);
   } catch (e) {
     console.warn(e);
     return null;
+  } finally {
+    isFetching = false;
   }
 };
 
@@ -99,9 +103,9 @@ class Chart {
   static getValueFormat() {
     return d3.format(',.2f');
   }
-  static getDataItemFromXCoordinate(xCoordinate, xScale, data) {
+  static getDataItemFromXCoordinate(coordinate, scale, data) {
     const bisectDate = d3.bisector(({ date }) => date).left;
-    const xDate = xScale.invert(xCoordinate);
+    const xDate = scale.invert(coordinate);
     const index = bisectDate(data, xDate, 1);
     const prevDataItem = data[index - 1];
     const dataItem = data[index];
@@ -118,6 +122,7 @@ class Chart {
     this.marginBottom = 40;
     this.marginLeft = 60;
     this.data = [];
+    this.duration = 300;
     this.$container = $container;
     this.$mainGroup = null;
     this.requestStateUpdate = requestStateUpdate;
@@ -125,9 +130,9 @@ class Chart {
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
   }
-  updateData(rawData) {
+  updateData(rawData, isDay) {
     this.data = rawData.map(item => {
-      item.date = this.isDay ?
+      item.date = isDay ?
         d3.timeParse('%Y%m%d %H:%M')(`${item.date} ${item.minute}`) :
         d3.timeParse('%Y-%m-%d')(item.date);
       return item;
@@ -139,7 +144,7 @@ class Chart {
     }
     const [xCoordinate, yCoordinate] = d3.mouse(this.$focusOverlay.node());
     const dataItem =
-      Chart.getDataItemFromXCoordinate(xCoordinate, this.xScale, this.data);
+      Chart.getDataItemFromXCoordinate(xCoordinate, this.xDateScale, this.data);
     const { date, open, high, low, close } = dataItem;
     this.$xFocusValue.text(Chart.getDateFormat(isDay)(date));
     this.$yFocusValue.text(Chart.getValueFormat()(close));
@@ -189,25 +194,38 @@ class Chart {
   renderLine(isDay) {
     const dateExtent = d3.extent(this.data, ({ date }) => date);
     const closeExtent = d3.extent(this.data, ({ close }) => close);
-    this.xScale.domain(dateExtent);
+    this.xDateScale.domain(dateExtent);
     this.yScale.domain(closeExtent);
-    const xAxis = d3.axisBottom(this.xScale).tickFormat(Chart.getDateFormat(isDay));
+    const xAxis = d3.axisBottom(this.xDateScale).tickFormat(Chart.getDateFormat(isDay));
     const yAxis = d3.axisLeft(this.yScale).tickFormat(d3.format(',.0f'));
-    this.$xAxis.call(xAxis);
-    this.$yAxis.call(yAxis);
+    this.$xAxis
+      .transition()
+      .duration(this.duration)
+      .call(xAxis);
+    this.$yAxis
+      .transition()
+      .duration(this.duration)
+      .call(yAxis);
+    this.$candleGroup.style('opacity', '0');
+    this.$linePath.style('opacity', '1');
+    this.$lineArea.style('opacity', '1');
     const line = d3.line()
-      .x(({ date }) => this.xScale(date))
+      .x(({ date }) => this.xDateScale(date))
       .y(({ close }) => this.yScale(close));
     const area = d3.area()
-      .x(({ date }) => this.xScale(date))
+      .x(({ date }) => this.xDateScale(date))
       .y0(this.height)
       .y1(({ close }) => this.yScale(close));
     this.$linePath
       .datum(this.data)
+      .transition()
+      .duration(this.duration)
       .attr('d', line);
     this.$lineArea
       .datum(this.data)
       .style('fill', 'url(#areaGradient)')
+      .transition()
+      .duration(this.duration)
       .attr('d', area);
   }
   renderCandle(isDay) {
@@ -221,40 +239,106 @@ class Chart {
     this.yScale.domain([yMin, yMax]);
     const xAxis = d3.axisBottom(this.xDateScale).tickFormat(Chart.getDateFormat(isDay));
     const yAxis = d3.axisLeft(this.yScale).tickFormat(d3.format(',.0f'));
-    this.$xAxis.call(xAxis);
-    this.$yAxis.call(yAxis);
-    this.$candleRects
-      .data(this.data)
-      .enter()
-      .append('rect')
+    this.$xAxis
+      .transition()
+      .duration(this.duration)
+      .call(xAxis);
+    this.$yAxis
+      .transition()
+      .duration(this.duration)
+      .call(yAxis);
+    this.$linePath.style('opacity', '0');
+    this.$lineArea.style('opacity', '0');
+    this.$candleGroup.style('opacity', '1');
+    const $candleRects = this.$candleGroup
+      .selectAll('.chart__candle-candle')
+      .data(this.data);
+    $candleRects
+      .exit()
+      .transition()
+      .duration(this.duration)
+      .attr('y', 0)
+      .style('opacity', '0')
+      .remove();
+    $candleRects
+      .transition()
+      .duration(this.duration)
       .attr('class', 'chart__candle-candle')
       .attr('x', (d, i) => this.xScale(i) - this.xBand.bandwidth())
       .attr('y', ({ open, close }) => this.yScale(Math.max(open, close)))
       .attr('width', this.xBand.bandwidth())
-      .attr('height', ({ open, close }) => (open === close) ?
-        1 :
-        this.yScale(Math.min(open, close)) - this.yScale(Math.max(open, close))
+      .attr('height', ({ open, close }) => (open !== close) ?
+        this.yScale(Math.min(open, close)) - this.yScale(Math.max(open, close)) :
+        1
       )
       .attr('class', ({ open, close }) => (open === close) ?
-        'chart__candle_equal' :
+        'chart__candle-candle chart__candle_equal' :
         (open > close) ?
-          'chart__candle_higher' :
-          'chart__candle_lower'
+          'chart__candle-candle chart__candle_higher' :
+          'chart__candle-candle chart__candle_lower'
       );
-    this.$candleLines
-      .data(this.data)
-      .enter()
-      .append('line')
+    $candleRects.enter()
+      .append('rect')
+      .style('opacity', '0')
+      .attr('y', this.height)
+      .transition()
+      .duration(this.duration)
+      .attr('class', 'chart__candle-candle')
+      .style('opacity', '1')
+      .attr('x', (d, i) => this.xScale(i) - this.xBand.bandwidth())
+      .attr('y', ({ open, close }) => this.yScale(Math.max(open, close)))
+      .attr('width', this.xBand.bandwidth())
+      .attr('height', ({ open, close }) => (open !== close) ?
+        this.yScale(Math.min(open, close)) - this.yScale(Math.max(open, close)) :
+        1
+      )
+      .attr('class', ({ open, close }) => (open === close) ?
+        'chart__candle-candle chart__candle_equal' :
+        (open > close) ?
+          'chart__candle-candle chart__candle_higher' :
+          'chart__candle-candle chart__candle_lower'
+      );
+    const $candleLines = this.$candleGroup
+      .selectAll('.chart__candle-stem')
+      .data(this.data);
+    $candleLines
+      .exit()
+      .transition()
+      .duration(this.duration)
+      .attr('y1', this.height)
+      .attr('y2', this.height)
+      .style('opacity', '0')
+      .remove();
+    $candleLines
+      .transition()
+      .duration(this.duration)
       .attr('class', 'chart__candle-stem')
       .attr('x1', (d, i) => this.xScale(i) - this.xBand.bandwidth() / 2)
       .attr('x2', (d, i) => this.xScale(i) - this.xBand.bandwidth() / 2)
       .attr('y1', ({ high }) => this.yScale(high))
       .attr('y2', ({ low }) => this.yScale(low))
       .attr('class', ({ open, close }) => (open === close) ?
-        'chart__candle_equal' :
+        'chart__candle-stem chart__candle_equal' :
         (open > close) ?
-          'chart__candle_higher' :
-          'chart__candle_lower'
+          'chart__candle-stem chart__candle_higher' :
+          'chart__candle-stem chart__candle_lower'
+      );
+    $candleLines.enter()
+      .append('line')
+      .style('opacity', '0')
+      .transition()
+      .duration(this.duration)
+      .attr('class', 'chart__candle-stem')
+      .style('opacity', '1')
+      .attr('x1', (d, i) => this.xScale(i) - this.xBand.bandwidth() / 2)
+      .attr('x2', (d, i) => this.xScale(i) - this.xBand.bandwidth() / 2)
+      .attr('y1', ({ high }) => this.yScale(high))
+      .attr('y2', ({ low }) => this.yScale(low))
+      .attr('class', ({ open, close }) => (open === close) ?
+        'chart__candle-stem chart__candle_equal' :
+        (open > close) ?
+          'chart__candle-stem chart__candle_higher' :
+          'chart__candle-stem chart__candle_lower'
       );
   }
   renderChart(isDay) {
@@ -274,8 +358,8 @@ class Chart {
     this.xDateScale = d3.scaleTime().rangeRound([0, this.width]);
     this.xScale = d3.scaleLinear().rangeRound([0, this.width]);
     this.yScale = d3.scaleLinear().rangeRound([this.height, 0]);
-    const xAxis = d3.axisBottom(this.xScale).tickValues(null);
-    const yAxis = d3.axisLeft(this.yScale).tickValues(null);
+    const xAxis = d3.axisBottom(this.xScale).tickFormat('');
+    const yAxis = d3.axisLeft(this.yScale).tickFormat('');
     this.$xAxis = this.$mainGroup.append('g')
       .attr('class', 'chart__x-axis')
       .attr('transform', `translate(0, ${this.height})`)
@@ -348,10 +432,10 @@ class Chart {
     this.$lineArea = this.$mainGroup.append('path')
       .attr('class', 'chart__line-area');
     /* candle */
-    const $candleGroup = this.$mainGroup.append('g')
+    this.$candleGroup = this.$mainGroup.append('g')
       .attr('class', 'chart__candle-group');
-    this.$candleRects = $candleGroup.selectAll('.chart__candle-candle');
-    this.$candleLines = $candleGroup.selectAll('.chart__candle-stem');
+    this.$candleGroup.selectAll('.chart__candle-candle');
+    this.$candleGroup.selectAll('.chart__candle-stem');
     /* focus overlay */
     this.$focusOverlay = this.$mainGroup.append('rect')
       .attr('class', 'chart__focus-overlay')
@@ -663,7 +747,7 @@ const init = async () => {
     high: '-',
     low: '-',
     close: '-',
-    period: '1m',
+    period: '3m',
     type: 'candle',
     stocksData: [],
   });
@@ -692,12 +776,12 @@ const init = async () => {
     $title.text(`График акций ${value.toUpperCase()}`);
     const period = state.get('period');
     const stocksData = await fetchStockData(value, period);
-    state.update('stocksData', stocksData);
+    stocksData && stocksData.length && state.update('stocksData', stocksData);
   });
   state.subscribe('period', async (value) => {
     const symbol = state.get('symbol');
     const stocksData = await fetchStockData(symbol, value);
-    state.update('stocksData', stocksData);
+    stocksData && stocksData.length && state.update('stocksData', stocksData);
   });
   state.subscribe('open', (value) => {
     $open.text(value);
@@ -714,7 +798,7 @@ const init = async () => {
   state.subscribe('stocksData', (value) => {
     const type = state.get('type');
     const isDay = isPeriodOneDay();
-    chart.updateData(value);
+    chart.updateData(value, isDay);
     type === 'line' ?
       chart.renderLine(isDay) :
       chart.renderCandle(isDay);

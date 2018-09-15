@@ -33199,6 +33199,7 @@ var documentReady = function documentReady() {
   });
 };
 
+var isFetching = false;
 var fetchStockData = function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(symbol, period) {
     var url;
@@ -33206,35 +33207,42 @@ var fetchStockData = function () {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            if (!(!symbol || !period)) {
+            if (!isFetching) {
               _context.next = 2;
               break;
             }
 
-            return _context.abrupt('return', null);
+            return _context.abrupt('return');
 
           case 2:
-            _context.prev = 2;
+            isFetching = true;
+            _context.prev = 3;
             url = 'https://api.iextrading.com/1.0/stock/' + symbol + '/chart/' + period;
-            _context.next = 6;
+            _context.next = 7;
             return d3.json(url);
 
-          case 6:
+          case 7:
             return _context.abrupt('return', _context.sent);
 
-          case 9:
-            _context.prev = 9;
-            _context.t0 = _context['catch'](2);
+          case 10:
+            _context.prev = 10;
+            _context.t0 = _context['catch'](3);
 
             console.warn(_context.t0);
             return _context.abrupt('return', null);
 
-          case 13:
+          case 14:
+            _context.prev = 14;
+
+            isFetching = false;
+            return _context.finish(14);
+
+          case 17:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, _this, [[2, 9]]);
+    }, _callee, _this, [[3, 10, 14, 17]]);
   }));
 
   return function fetchStockData(_x, _x2) {
@@ -33362,12 +33370,12 @@ var Chart = function () {
     }
   }, {
     key: 'getDataItemFromXCoordinate',
-    value: function getDataItemFromXCoordinate(xCoordinate, xScale, data) {
+    value: function getDataItemFromXCoordinate(coordinate, scale, data) {
       var bisectDate = d3.bisector(function (_ref6) {
         var date = _ref6.date;
         return date;
       }).left;
-      var xDate = xScale.invert(xCoordinate);
+      var xDate = scale.invert(coordinate);
       var index = bisectDate(data, xDate, 1);
       var prevDataItem = data[index - 1];
       var dataItem = data[index];
@@ -33388,6 +33396,7 @@ var Chart = function () {
     this.marginBottom = 40;
     this.marginLeft = 60;
     this.data = [];
+    this.duration = 300;
     this.$container = $container;
     this.$mainGroup = null;
     this.requestStateUpdate = requestStateUpdate;
@@ -33398,11 +33407,9 @@ var Chart = function () {
 
   _createClass(Chart, [{
     key: 'updateData',
-    value: function updateData(rawData) {
-      var _this3 = this;
-
+    value: function updateData(rawData, isDay) {
       this.data = rawData.map(function (item) {
-        item.date = _this3.isDay ? d3.timeParse('%Y%m%d %H:%M')(item.date + ' ' + item.minute) : d3.timeParse('%Y-%m-%d')(item.date);
+        item.date = isDay ? d3.timeParse('%Y%m%d %H:%M')(item.date + ' ' + item.minute) : d3.timeParse('%Y-%m-%d')(item.date);
         return item;
       });
     }
@@ -33418,7 +33425,7 @@ var Chart = function () {
           xCoordinate = _d3$mouse2[0],
           yCoordinate = _d3$mouse2[1];
 
-      var dataItem = Chart.getDataItemFromXCoordinate(xCoordinate, this.xScale, this.data);
+      var dataItem = Chart.getDataItemFromXCoordinate(xCoordinate, this.xDateScale, this.data);
       var date = dataItem.date,
           open = dataItem.open,
           high = dataItem.high,
@@ -33478,7 +33485,7 @@ var Chart = function () {
   }, {
     key: 'renderLine',
     value: function renderLine(isDay) {
-      var _this4 = this;
+      var _this3 = this;
 
       var dateExtent = d3.extent(this.data, function (_ref7) {
         var date = _ref7.date;
@@ -33488,33 +33495,36 @@ var Chart = function () {
         var close = _ref8.close;
         return close;
       });
-      this.xScale.domain(dateExtent);
+      this.xDateScale.domain(dateExtent);
       this.yScale.domain(closeExtent);
-      var xAxis = d3.axisBottom(this.xScale).tickFormat(Chart.getDateFormat(isDay));
+      var xAxis = d3.axisBottom(this.xDateScale).tickFormat(Chart.getDateFormat(isDay));
       var yAxis = d3.axisLeft(this.yScale).tickFormat(d3.format(',.0f'));
-      this.$xAxis.call(xAxis);
-      this.$yAxis.call(yAxis);
+      this.$xAxis.transition().duration(this.duration).call(xAxis);
+      this.$yAxis.transition().duration(this.duration).call(yAxis);
+      this.$candleGroup.style('opacity', '0');
+      this.$linePath.style('opacity', '1');
+      this.$lineArea.style('opacity', '1');
       var line = d3.line().x(function (_ref9) {
         var date = _ref9.date;
-        return _this4.xScale(date);
+        return _this3.xDateScale(date);
       }).y(function (_ref10) {
         var close = _ref10.close;
-        return _this4.yScale(close);
+        return _this3.yScale(close);
       });
       var area = d3.area().x(function (_ref11) {
         var date = _ref11.date;
-        return _this4.xScale(date);
+        return _this3.xDateScale(date);
       }).y0(this.height).y1(function (_ref12) {
         var close = _ref12.close;
-        return _this4.yScale(close);
+        return _this3.yScale(close);
       });
-      this.$linePath.datum(this.data).attr('d', line);
-      this.$lineArea.datum(this.data).style('fill', 'url(#areaGradient)').attr('d', area);
+      this.$linePath.datum(this.data).transition().duration(this.duration).attr('d', line);
+      this.$lineArea.datum(this.data).style('fill', 'url(#areaGradient)').transition().duration(this.duration).attr('d', area);
     }
   }, {
     key: 'renderCandle',
     value: function renderCandle(isDay) {
-      var _this5 = this;
+      var _this4 = this;
 
       var dateExtent = d3.extent(this.data, function (_ref13) {
         var date = _ref13.date;
@@ -33533,37 +33543,74 @@ var Chart = function () {
       this.yScale.domain([yMin, yMax]);
       var xAxis = d3.axisBottom(this.xDateScale).tickFormat(Chart.getDateFormat(isDay));
       var yAxis = d3.axisLeft(this.yScale).tickFormat(d3.format(',.0f'));
-      this.$xAxis.call(xAxis);
-      this.$yAxis.call(yAxis);
-      this.$candleRects.data(this.data).enter().append('rect').attr('class', 'chart__candle-candle').attr('x', function (d, i) {
-        return _this5.xScale(i) - _this5.xBand.bandwidth();
+      this.$xAxis.transition().duration(this.duration).call(xAxis);
+      this.$yAxis.transition().duration(this.duration).call(yAxis);
+      this.$linePath.style('opacity', '0');
+      this.$lineArea.style('opacity', '0');
+      this.$candleGroup.style('opacity', '1');
+      var $candleRects = this.$candleGroup.selectAll('.chart__candle-candle').data(this.data);
+      $candleRects.exit().transition().duration(this.duration).attr('y', 0).style('opacity', '0').remove();
+      $candleRects.transition().duration(this.duration).attr('class', 'chart__candle-candle').attr('x', function (d, i) {
+        return _this4.xScale(i) - _this4.xBand.bandwidth();
       }).attr('y', function (_ref14) {
         var open = _ref14.open,
             close = _ref14.close;
-        return _this5.yScale(Math.max(open, close));
+        return _this4.yScale(Math.max(open, close));
       }).attr('width', this.xBand.bandwidth()).attr('height', function (_ref15) {
         var open = _ref15.open,
             close = _ref15.close;
-        return open === close ? 1 : _this5.yScale(Math.min(open, close)) - _this5.yScale(Math.max(open, close));
+        return open !== close ? _this4.yScale(Math.min(open, close)) - _this4.yScale(Math.max(open, close)) : 1;
       }).attr('class', function (_ref16) {
         var open = _ref16.open,
             close = _ref16.close;
-        return open === close ? 'chart__candle_equal' : open > close ? 'chart__candle_higher' : 'chart__candle_lower';
+        return open === close ? 'chart__candle-candle chart__candle_equal' : open > close ? 'chart__candle-candle chart__candle_higher' : 'chart__candle-candle chart__candle_lower';
       });
-      this.$candleLines.data(this.data).enter().append('line').attr('class', 'chart__candle-stem').attr('x1', function (d, i) {
-        return _this5.xScale(i) - _this5.xBand.bandwidth() / 2;
-      }).attr('x2', function (d, i) {
-        return _this5.xScale(i) - _this5.xBand.bandwidth() / 2;
-      }).attr('y1', function (_ref17) {
-        var high = _ref17.high;
-        return _this5.yScale(high);
-      }).attr('y2', function (_ref18) {
-        var low = _ref18.low;
-        return _this5.yScale(low);
+      $candleRects.enter().append('rect').style('opacity', '0').attr('y', this.height).transition().duration(this.duration).attr('class', 'chart__candle-candle').style('opacity', '1').attr('x', function (d, i) {
+        return _this4.xScale(i) - _this4.xBand.bandwidth();
+      }).attr('y', function (_ref17) {
+        var open = _ref17.open,
+            close = _ref17.close;
+        return _this4.yScale(Math.max(open, close));
+      }).attr('width', this.xBand.bandwidth()).attr('height', function (_ref18) {
+        var open = _ref18.open,
+            close = _ref18.close;
+        return open !== close ? _this4.yScale(Math.min(open, close)) - _this4.yScale(Math.max(open, close)) : 1;
       }).attr('class', function (_ref19) {
         var open = _ref19.open,
             close = _ref19.close;
-        return open === close ? 'chart__candle_equal' : open > close ? 'chart__candle_higher' : 'chart__candle_lower';
+        return open === close ? 'chart__candle-candle chart__candle_equal' : open > close ? 'chart__candle-candle chart__candle_higher' : 'chart__candle-candle chart__candle_lower';
+      });
+      var $candleLines = this.$candleGroup.selectAll('.chart__candle-stem').data(this.data);
+      $candleLines.exit().transition().duration(this.duration).attr('y1', this.height).attr('y2', this.height).style('opacity', '0').remove();
+      $candleLines.transition().duration(this.duration).attr('class', 'chart__candle-stem').attr('x1', function (d, i) {
+        return _this4.xScale(i) - _this4.xBand.bandwidth() / 2;
+      }).attr('x2', function (d, i) {
+        return _this4.xScale(i) - _this4.xBand.bandwidth() / 2;
+      }).attr('y1', function (_ref20) {
+        var high = _ref20.high;
+        return _this4.yScale(high);
+      }).attr('y2', function (_ref21) {
+        var low = _ref21.low;
+        return _this4.yScale(low);
+      }).attr('class', function (_ref22) {
+        var open = _ref22.open,
+            close = _ref22.close;
+        return open === close ? 'chart__candle-stem chart__candle_equal' : open > close ? 'chart__candle-stem chart__candle_higher' : 'chart__candle-stem chart__candle_lower';
+      });
+      $candleLines.enter().append('line').style('opacity', '0').transition().duration(this.duration).attr('class', 'chart__candle-stem').style('opacity', '1').attr('x1', function (d, i) {
+        return _this4.xScale(i) - _this4.xBand.bandwidth() / 2;
+      }).attr('x2', function (d, i) {
+        return _this4.xScale(i) - _this4.xBand.bandwidth() / 2;
+      }).attr('y1', function (_ref23) {
+        var high = _ref23.high;
+        return _this4.yScale(high);
+      }).attr('y2', function (_ref24) {
+        var low = _ref24.low;
+        return _this4.yScale(low);
+      }).attr('class', function (_ref25) {
+        var open = _ref25.open,
+            close = _ref25.close;
+        return open === close ? 'chart__candle-stem chart__candle_equal' : open > close ? 'chart__candle-stem chart__candle_higher' : 'chart__candle-stem chart__candle_lower';
       });
     }
   }, {
@@ -33582,8 +33629,8 @@ var Chart = function () {
       this.xDateScale = d3.scaleTime().rangeRound([0, this.width]);
       this.xScale = d3.scaleLinear().rangeRound([0, this.width]);
       this.yScale = d3.scaleLinear().rangeRound([this.height, 0]);
-      var xAxis = d3.axisBottom(this.xScale).tickValues(null);
-      var yAxis = d3.axisLeft(this.yScale).tickValues(null);
+      var xAxis = d3.axisBottom(this.xScale).tickFormat('');
+      var yAxis = d3.axisLeft(this.yScale).tickFormat('');
       this.$xAxis = this.$mainGroup.append('g').attr('class', 'chart__x-axis').attr('transform', 'translate(0, ' + this.height + ')').call(xAxis);
       this.$yAxis = this.$mainGroup.append('g').attr('class', 'chart__y-axis').call(yAxis);
       /* grid */
@@ -33608,9 +33655,9 @@ var Chart = function () {
       this.$linePath = this.$mainGroup.append('path').attr('class', 'chart__line-path');
       this.$lineArea = this.$mainGroup.append('path').attr('class', 'chart__line-area');
       /* candle */
-      var $candleGroup = this.$mainGroup.append('g').attr('class', 'chart__candle-group');
-      this.$candleRects = $candleGroup.selectAll('.chart__candle-candle');
-      this.$candleLines = $candleGroup.selectAll('.chart__candle-stem');
+      this.$candleGroup = this.$mainGroup.append('g').attr('class', 'chart__candle-group');
+      this.$candleGroup.selectAll('.chart__candle-candle');
+      this.$candleGroup.selectAll('.chart__candle-stem');
       /* focus overlay */
       this.$focusOverlay = this.$mainGroup.append('rect').attr('class', 'chart__focus-overlay').attr('width', this.width).attr('height', this.height).on('mouseover', this.handleMouseOver.bind(isDay)).on('mouseout', this.handleMouseOut).on('mousemove', this.handleMouseMove);
     }
@@ -33903,7 +33950,7 @@ const renderCandleChart = ($chart, rawData, state) => {
 */
 
 var init = function () {
-  var _ref20 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
+  var _ref26 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
     var $title, $symbol, $open, $high, $low, $close, $container, $period, $type, state, isPeriodOneDay, chart;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
@@ -33925,7 +33972,7 @@ var init = function () {
               high: '-',
               low: '-',
               close: '-',
-              period: '1m',
+              period: '3m',
               type: 'candle',
               stocksData: []
             });
@@ -33937,10 +33984,10 @@ var init = function () {
             chart = new Chart({
               $container: $container,
               requestStateUpdate: function requestStateUpdate(nextState) {
-                Object.entries(nextState).forEach(function (_ref21) {
-                  var _ref22 = _slicedToArray(_ref21, 2),
-                      name = _ref22[0],
-                      value = _ref22[1];
+                Object.entries(nextState).forEach(function (_ref27) {
+                  var _ref28 = _slicedToArray(_ref27, 2),
+                      name = _ref28[0],
+                      value = _ref28[1];
 
                   return state.update(name, value);
                 });
@@ -33964,7 +34011,7 @@ var init = function () {
               state.update('type', value);
             }, state.get('type'));
             state.subscribe('symbol', function () {
-              var _ref23 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(value) {
+              var _ref29 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(value) {
                 var period, stocksData;
                 return regeneratorRuntime.wrap(function _callee2$(_context2) {
                   while (1) {
@@ -33978,7 +34025,7 @@ var init = function () {
                       case 4:
                         stocksData = _context2.sent;
 
-                        state.update('stocksData', stocksData);
+                        stocksData && stocksData.length && state.update('stocksData', stocksData);
 
                       case 6:
                       case 'end':
@@ -33989,11 +34036,11 @@ var init = function () {
               }));
 
               return function (_x4) {
-                return _ref23.apply(this, arguments);
+                return _ref29.apply(this, arguments);
               };
             }());
             state.subscribe('period', function () {
-              var _ref24 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(value) {
+              var _ref30 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(value) {
                 var symbol, stocksData;
                 return regeneratorRuntime.wrap(function _callee3$(_context3) {
                   while (1) {
@@ -34006,7 +34053,7 @@ var init = function () {
                       case 3:
                         stocksData = _context3.sent;
 
-                        state.update('stocksData', stocksData);
+                        stocksData && stocksData.length && state.update('stocksData', stocksData);
 
                       case 5:
                       case 'end':
@@ -34017,7 +34064,7 @@ var init = function () {
               }));
 
               return function (_x5) {
-                return _ref24.apply(this, arguments);
+                return _ref30.apply(this, arguments);
               };
             }());
             state.subscribe('open', function (value) {
@@ -34035,7 +34082,7 @@ var init = function () {
             state.subscribe('stocksData', function (value) {
               var type = state.get('type');
               var isDay = isPeriodOneDay();
-              chart.updateData(value);
+              chart.updateData(value, isDay);
               type === 'line' ? chart.renderLine(isDay) : chart.renderCandle(isDay);
             });
             state.subscribe('type', function (value) {
@@ -34053,7 +34100,7 @@ var init = function () {
   }));
 
   return function init() {
-    return _ref20.apply(this, arguments);
+    return _ref26.apply(this, arguments);
   };
 }();
 
@@ -34116,7 +34163,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '63025' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '53280' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
