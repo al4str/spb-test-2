@@ -9,4 +9,4 @@
 
 ## [Le résultat](https://al4str.github.io/spb-test-2/)
 
-![](https://github.com/al4str/spb-test/raw/master/example.jpg "Results")
+![](https://raw.githubusercontent.com/al4str/spb-test-2/master/example.jpg "Results")
