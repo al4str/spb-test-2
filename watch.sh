@@ -1,4 +1,8 @@
 #!/bin/bash
 
-npx parcel ./src/index.html -p 5000
-# parcel build entry.js -d build/output
+# rm -rf ./dist/*
+cp -f ./public/* ./dist/
+./serveStatic.js
+# don't fucking do this
+# (npx parcel watch ./src/*.js -d ./dist/ -o stock-chart-widget.js &)
+# (npx postcss ./src/*.css -o ./dist/stock-chart-widget.css -u autoprefixer -w --verbose &)

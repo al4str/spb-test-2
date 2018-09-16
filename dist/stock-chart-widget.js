@@ -32973,30 +32973,20 @@ Object.keys(_d3Zoom).forEach(function (key) {
     }
   });
 });
-},{"./dist/package":"../node_modules/d3/dist/package.js","d3-array":"../node_modules/d3-array/src/index.js","d3-axis":"../node_modules/d3-axis/src/index.js","d3-brush":"../node_modules/d3-brush/src/index.js","d3-chord":"../node_modules/d3-chord/src/index.js","d3-collection":"../node_modules/d3-collection/src/index.js","d3-color":"../node_modules/d3-color/src/index.js","d3-contour":"../node_modules/d3-contour/src/index.js","d3-dispatch":"../node_modules/d3-dispatch/src/index.js","d3-drag":"../node_modules/d3-drag/src/index.js","d3-dsv":"../node_modules/d3-dsv/src/index.js","d3-ease":"../node_modules/d3-ease/src/index.js","d3-fetch":"../node_modules/d3-fetch/src/index.js","d3-force":"../node_modules/d3-force/src/index.js","d3-format":"../node_modules/d3-format/src/index.js","d3-geo":"../node_modules/d3-geo/src/index.js","d3-hierarchy":"../node_modules/d3-hierarchy/src/index.js","d3-interpolate":"../node_modules/d3-interpolate/src/index.js","d3-path":"../node_modules/d3-path/src/index.js","d3-polygon":"../node_modules/d3-polygon/src/index.js","d3-quadtree":"../node_modules/d3-quadtree/src/index.js","d3-random":"../node_modules/d3-random/src/index.js","d3-scale":"../node_modules/d3-scale/src/index.js","d3-scale-chromatic":"../node_modules/d3-scale-chromatic/src/index.js","d3-selection":"../node_modules/d3-selection/src/index.js","d3-shape":"../node_modules/d3-shape/src/index.js","d3-time":"../node_modules/d3-time/src/index.js","d3-time-format":"../node_modules/d3-time-format/src/index.js","d3-timer":"../node_modules/d3-timer/src/index.js","d3-transition":"../node_modules/d3-transition/src/index.js","d3-voronoi":"../node_modules/d3-voronoi/src/index.js","d3-zoom":"../node_modules/d3-zoom/src/index.js"}],"../node_modules/d3-time-format/locale/ru-RU.json":[function(require,module,exports) {
-module.exports = {
-  "dateTime": "%A, %e %B %Y г. %X",
-  "date": "%d.%m.%Y",
-  "time": "%H:%M:%S",
-  "periods": ["AM", "PM"],
-  "days": ["воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"],
-  "shortDays": ["вс", "пн", "вт", "ср", "чт", "пт", "сб"],
-  "months": ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"],
-  "shortMonths": ["янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
-}
-;
-},{}],"index.js":[function(require,module,exports) {
+},{"./dist/package":"../node_modules/d3/dist/package.js","d3-array":"../node_modules/d3-array/src/index.js","d3-axis":"../node_modules/d3-axis/src/index.js","d3-brush":"../node_modules/d3-brush/src/index.js","d3-chord":"../node_modules/d3-chord/src/index.js","d3-collection":"../node_modules/d3-collection/src/index.js","d3-color":"../node_modules/d3-color/src/index.js","d3-contour":"../node_modules/d3-contour/src/index.js","d3-dispatch":"../node_modules/d3-dispatch/src/index.js","d3-drag":"../node_modules/d3-drag/src/index.js","d3-dsv":"../node_modules/d3-dsv/src/index.js","d3-ease":"../node_modules/d3-ease/src/index.js","d3-fetch":"../node_modules/d3-fetch/src/index.js","d3-force":"../node_modules/d3-force/src/index.js","d3-format":"../node_modules/d3-format/src/index.js","d3-geo":"../node_modules/d3-geo/src/index.js","d3-hierarchy":"../node_modules/d3-hierarchy/src/index.js","d3-interpolate":"../node_modules/d3-interpolate/src/index.js","d3-path":"../node_modules/d3-path/src/index.js","d3-polygon":"../node_modules/d3-polygon/src/index.js","d3-quadtree":"../node_modules/d3-quadtree/src/index.js","d3-random":"../node_modules/d3-random/src/index.js","d3-scale":"../node_modules/d3-scale/src/index.js","d3-scale-chromatic":"../node_modules/d3-scale-chromatic/src/index.js","d3-selection":"../node_modules/d3-selection/src/index.js","d3-shape":"../node_modules/d3-shape/src/index.js","d3-time":"../node_modules/d3-time/src/index.js","d3-time-format":"../node_modules/d3-time-format/src/index.js","d3-timer":"../node_modules/d3-timer/src/index.js","d3-transition":"../node_modules/d3-transition/src/index.js","d3-voronoi":"../node_modules/d3-voronoi/src/index.js","d3-zoom":"../node_modules/d3-zoom/src/index.js"}],"stock-chart-widget.js":[function(require,module,exports) {
+var _this8 = this;
+
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _this = this;
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 require('core-js/modules/es6.typed.array-buffer');
 
@@ -33191,72 +33181,11 @@ require('core-js/modules/web.dom.iterable');
 require('regenerator-runtime/runtime');
 
 var d3 = require('d3');
-var ruTimeLocale = require('d3-time-format/locale/ru-RU');
 
-var documentReady = function documentReady() {
-  return new Promise(function (resolve) {
-    document.readyState === 'complete' ? resolve() : window.addEventListener('load', resolve, true);
-  });
-};
-
-var isFetching = false;
-var fetchStockData = function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(symbol, period) {
-    var url;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            if (!isFetching) {
-              _context.next = 2;
-              break;
-            }
-
-            return _context.abrupt('return');
-
-          case 2:
-            isFetching = true;
-            _context.prev = 3;
-            url = 'https://api.iextrading.com/1.0/stock/' + symbol + '/chart/' + period;
-            _context.next = 7;
-            return d3.json(url);
-
-          case 7:
-            return _context.abrupt('return', _context.sent);
-
-          case 10:
-            _context.prev = 10;
-            _context.t0 = _context['catch'](3);
-
-            console.warn(_context.t0);
-            return _context.abrupt('return', null);
-
-          case 14:
-            _context.prev = 14;
-
-            isFetching = false;
-            return _context.finish(14);
-
-          case 17:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, _callee, _this, [[3, 10, 14, 17]]);
-  }));
-
-  return function fetchStockData(_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
-}();
-
-var listenRadioGroupChanges = function listenRadioGroupChanges($d3Target, handler, initialValue) {
-  if (!$d3Target || typeof handler !== 'function') {
-    return;
-  }
-  $d3Target.selectAll('input[type="radio"]').on('change', handler);
-  $d3Target.select('input[value="' + initialValue + '"]').node().checked = true;
-};
+var SYMBOLS = [{ value: 'aapl', cap: 'Apple' }, { value: 'googl', cap: 'Google' }, { value: 'msft', cap: 'Microsoft' }];
+var PERIODS = [{ title: '1 день', value: '1d', cap: '1Д' }, { title: '1 месяц', value: '1m', cap: '1М' }, { title: '3 месяца', value: '3m', cap: '3М' }, { title: '6 месяцев', value: '6m', cap: '6М' }, { title: 'От начала года', value: 'ytd', cap: 'YTD' }, { title: '1 год', value: '1y', cap: '1Г' }, { title: '5 лет', value: '5y', cap: '5Л' }];
+var TYPES = [{ value: 'line', cap: 'Линия' }, { value: 'candle', cap: 'Японские свечи' }];
+var OHLC_LIST = [{ name: 'open', cap: 'откр', value: '—' }, { name: 'high', cap: 'макс', value: '—' }, { name: 'low', cap: 'мин', value: '—' }, { name: 'close', cap: 'закр', value: '—' }];
 
 var State = function () {
   _createClass(State, null, [{
@@ -33286,12 +33215,17 @@ var State = function () {
   }]);
 
   function State() {
+    var _this = this;
+
     var initialState = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     _classCallCheck(this, State);
 
     this.state = initialState;
     this.subscribers = {};
+    Object.keys(this.state).forEach(function (name) {
+      _this.subscribers[name] = [];
+    });
   }
 
   _createClass(State, [{
@@ -33306,10 +33240,10 @@ var State = function () {
       State.checkName(name, this.state);
       State.checkValue(value);
       var state = {};
-      Object.entries(this.state).forEach(function (_ref2) {
-        var _ref3 = _slicedToArray(_ref2, 2),
-            prevStateName = _ref3[0],
-            prevStateValue = _ref3[1];
+      Object.entries(this.state).forEach(function (_ref) {
+        var _ref2 = _slicedToArray(_ref, 2),
+            prevStateName = _ref2[0],
+            prevStateValue = _ref2[1];
 
         if (prevStateName === name) {
           if ((typeof prevStateValue === 'undefined' ? 'undefined' : _typeof(prevStateValue)) === 'object') {
@@ -33331,37 +33265,120 @@ var State = function () {
     value: function subscribe(name, subscriber) {
       State.checkName(name, this.state);
       State.checkSubscriber(subscriber);
-      if (!this.subscribers[name]) {
-        this.subscribers[name] = [];
-      }
       this.subscribers[name].push(subscriber);
-    }
-  }, {
-    key: 'callAllSubscribers',
-    value: function callAllSubscribers() {
-      var _this2 = this;
-
-      Object.entries(this.subscribers).forEach(function (_ref4) {
-        var _ref5 = _slicedToArray(_ref4, 2),
-            name = _ref5[0],
-            subscribers = _ref5[1];
-
-        var value = _this2.get(name);
-        subscribers.forEach(function (subscriber) {
-          return subscriber(value);
-        });
-      });
     }
   }]);
 
   return State;
 }();
 
+var RadioField = function () {
+  function RadioField(props) {
+    _classCallCheck(this, RadioField);
+
+    var $parent = props.$parent,
+        name = props.name,
+        defaultValue = props.defaultValue,
+        items = props.items,
+        requestStateUpdate = props.requestStateUpdate;
+
+    this.$parent = $parent;
+    this.name = name;
+    this.defaultValue = defaultValue;
+    this.items = items;
+    this.requestStateUpdate = requestStateUpdate;
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  _createClass(RadioField, [{
+    key: 'disable',
+    value: function disable() {
+      this.$list.classed('stock-chart-widget_disabled', true);
+      this.$fields.property('disabled', true);
+    }
+  }, {
+    key: 'enable',
+    value: function enable() {
+      this.$list.classed('stock-chart-widget_disabled', false);
+      this.$fields.property('disabled', false);
+    }
+  }, {
+    key: 'handleChange',
+    value: function handleChange(_ref3) {
+      var value = _ref3.value;
+
+      this.requestStateUpdate(_defineProperty({}, this.name, value));
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      this.$list = this.$parent.append('div').attr('class', 'stock-chart-widget__radio-list').attr('role', 'radiogroup');
+      var $labels = this.$list.selectAll('label').data(this.items).enter().append('label').attr('class', 'stock-chart-widget__radio-item').property('title', function (_ref4) {
+        var title = _ref4.title;
+        return title;
+      });
+      this.$fields = $labels.append('input').attr('class', 'stock-chart-widget__radio-field').attr('type', 'radio').attr('name', this.name).property('value', function (_ref5) {
+        var value = _ref5.value;
+        return value;
+      }).property('checked', function (_ref6) {
+        var value = _ref6.value;
+        return value === _this2.defaultValue;
+      }).on('change', this.handleChange);
+      $labels.append('span').attr('class', 'stock-chart-widget__radio-cap').text(function (_ref7) {
+        var cap = _ref7.cap;
+        return cap;
+      });
+    }
+  }]);
+
+  return RadioField;
+}();
+
+var OHLC = function () {
+  function OHLC(props) {
+    _classCallCheck(this, OHLC);
+
+    var $parent = props.$parent,
+        items = props.items;
+
+    this.$parent = $parent;
+    this.items = items;
+  }
+
+  _createClass(OHLC, [{
+    key: 'updateValue',
+    value: function updateValue(name, value) {
+      this.$items.select('[data-ohlc-name="' + name + '"]').text(value);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var $list = this.$parent.append('ul').attr('class', 'stock-chart-widget__ohlc-list');
+      this.$items = $list.selectAll('li').data(this.items).enter().append('li').attr('class', 'stock-chart-widget__ohlc-item');
+      this.$items.append('span').attr('class', 'stock-chart-widget__ohlc-label').text(function (_ref8) {
+        var cap = _ref8.cap;
+        return cap;
+      });
+      this.$items.append('span').attr('class', 'stock-chart-widget__ohlc-value').attr('data-ohlc-name', function (_ref9) {
+        var name = _ref9.name;
+        return name;
+      }).text(function (_ref10) {
+        var value = _ref10.value;
+        return value;
+      });
+    }
+  }]);
+
+  return OHLC;
+}();
+
 var Chart = function () {
   _createClass(Chart, null, [{
     key: 'getDateFormat',
-    value: function getDateFormat(isDay) {
-      return isDay ? d3.timeFormat('%H:%M') : d3.timeFormat('%d.%m.%Y');
+    value: function getDateFormat(period) {
+      return period === '1d' ? d3.timeFormat('%H:%M') : d3.timeFormat('%d.%m.%Y');
     }
   }, {
     key: 'getValueFormat',
@@ -33371,8 +33388,8 @@ var Chart = function () {
   }, {
     key: 'getDataItemFromXCoordinate',
     value: function getDataItemFromXCoordinate(coordinate, scale, data) {
-      var bisectDate = d3.bisector(function (_ref6) {
-        var date = _ref6.date;
+      var bisectDate = d3.bisector(function (_ref11) {
+        var date = _ref11.date;
         return date;
       }).left;
       var xDate = scale.invert(coordinate);
@@ -33386,7 +33403,8 @@ var Chart = function () {
   function Chart(props) {
     _classCallCheck(this, Chart);
 
-    var $container = props.$container,
+    var $parent = props.$parent,
+        period = props.period,
         requestStateUpdate = props.requestStateUpdate;
 
     this.width = 0;
@@ -33394,28 +33412,22 @@ var Chart = function () {
     this.marginTop = 20;
     this.marginRight = 20;
     this.marginBottom = 40;
-    this.marginLeft = 60;
+    this.marginLeft = 50;
     this.data = [];
+    this.period = period;
     this.duration = 300;
-    this.$container = $container;
-    this.$mainGroup = null;
+    this.$container = $parent;
     this.requestStateUpdate = requestStateUpdate;
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseOver = this.handleMouseOver.bind(this);
     this.handleMouseOut = this.handleMouseOut.bind(this);
+    this.updatePeriod = this.updatePeriod.bind(this);
+    this.updateData = this.updateData.bind(this);
   }
 
   _createClass(Chart, [{
-    key: 'updateData',
-    value: function updateData(rawData, isDay) {
-      this.data = rawData.map(function (item) {
-        item.date = isDay ? d3.timeParse('%Y%m%d %H:%M')(item.date + ' ' + item.minute) : d3.timeParse('%Y-%m-%d')(item.date);
-        return item;
-      });
-    }
-  }, {
     key: 'handleMouseMove',
-    value: function handleMouseMove(isDay) {
+    value: function handleMouseMove() {
       if (!this.data.length) {
         return;
       }
@@ -33432,7 +33444,7 @@ var Chart = function () {
           low = dataItem.low,
           close = dataItem.close;
 
-      this.$xFocusValue.text(Chart.getDateFormat(isDay)(date));
+      this.$xFocusValue.text(Chart.getDateFormat(this.period)(date));
       this.$yFocusValue.text(Chart.getValueFormat()(close));
 
       var _$xFocusValue$node$ge = this.$xFocusValue.node().getBBox(),
@@ -33483,51 +33495,96 @@ var Chart = function () {
       this.$yFocusLine.style('opacity', '0');
     }
   }, {
-    key: 'renderLine',
-    value: function renderLine(isDay) {
+    key: 'updatePeriod',
+    value: function updatePeriod(period) {
+      this.period = period;
+    }
+  }, {
+    key: 'updateData',
+    value: function updateData(rawData) {
       var _this3 = this;
 
-      var dateExtent = d3.extent(this.data, function (_ref7) {
-        var date = _ref7.date;
+      this.data = rawData.map(function (item) {
+        item.date = _this3.period === '1d' ? d3.timeParse('%Y%m%d %H:%M')(item.date + ' ' + item.minute) : d3.timeParse('%Y-%m-%d')(item.date);
+        return item;
+      }).filter(function (_ref12) {
+        var open = _ref12.open,
+            high = _ref12.high,
+            low = _ref12.low,
+            close = _ref12.close;
+        return open > 0 && high > 0 && low > 0 && close > 9;
+      });
+    }
+  }, {
+    key: 'updatePrice',
+    value: function updatePrice(_ref13) {
+      var open = _ref13.open,
+          close = _ref13.close;
+
+      var price = close && close.price ? close.price : open.price;
+      var yCoordinate = this.yScale(price);
+      this.$priceValue.text(Chart.getValueFormat()(price));
+
+      var _$priceValue$node$get = this.$priceValue.node().getBBox(),
+          width = _$priceValue$node$get.width,
+          height = _$priceValue$node$get.height;
+
+      var paddingX = 12;
+      var paddingY = 8;
+      var rectWidth = width + paddingX;
+      var rectHeight = height + paddingY;
+      this.$priceGroup.transition().duration(this.duration).attr('transform', 'translate(' + -1 * rectWidth / 2 + ', ' + yCoordinate + ')');
+      this.$priceRect.attr('width', rectWidth).attr('height', rectHeight).transition().duration(this.duration).attr('transform', 'translate(' + -1 * rectWidth / 2 + ', ' + -1 * rectHeight / 2 + ')');
+      this.$priceLine.transition().duration(this.duration).attr('y1', yCoordinate).attr('y2', yCoordinate);
+    }
+  }, {
+    key: 'updateLine',
+    value: function updateLine() {
+      var _this4 = this;
+
+      var dateExtent = d3.extent(this.data, function (_ref14) {
+        var date = _ref14.date;
         return date;
       });
-      var closeExtent = d3.extent(this.data, function (_ref8) {
-        var close = _ref8.close;
+      var closeExtent = d3.extent(this.data, function (_ref15) {
+        var close = _ref15.close;
         return close;
       });
       this.xDateScale.domain(dateExtent);
       this.yScale.domain(closeExtent);
-      var xAxis = d3.axisBottom(this.xDateScale).tickFormat(Chart.getDateFormat(isDay));
+      var xAxis = d3.axisBottom(this.xDateScale).tickFormat(Chart.getDateFormat(this.period));
       var yAxis = d3.axisLeft(this.yScale).tickFormat(d3.format(',.0f'));
       this.$xAxis.transition().duration(this.duration).call(xAxis);
       this.$yAxis.transition().duration(this.duration).call(yAxis);
+      this.$xGrid.transition().duration(this.duration).call(xAxis.tickSize(-this.height).tickFormat(''));
+      this.$yGrid.transition().duration(this.duration).call(yAxis.tickSize(-this.width).tickFormat(''));
       this.$candleGroup.style('opacity', '0');
       this.$linePath.style('opacity', '1');
       this.$lineArea.style('opacity', '1');
-      var line = d3.line().x(function (_ref9) {
-        var date = _ref9.date;
-        return _this3.xDateScale(date);
-      }).y(function (_ref10) {
-        var close = _ref10.close;
-        return _this3.yScale(close);
+      var line = d3.line().x(function (_ref16) {
+        var date = _ref16.date;
+        return _this4.xDateScale(date);
+      }).y(function (_ref17) {
+        var close = _ref17.close;
+        return _this4.yScale(close);
       });
-      var area = d3.area().x(function (_ref11) {
-        var date = _ref11.date;
-        return _this3.xDateScale(date);
-      }).y0(this.height).y1(function (_ref12) {
-        var close = _ref12.close;
-        return _this3.yScale(close);
+      var area = d3.area().x(function (_ref18) {
+        var date = _ref18.date;
+        return _this4.xDateScale(date);
+      }).y0(this.height).y1(function (_ref19) {
+        var close = _ref19.close;
+        return _this4.yScale(close);
       });
       this.$linePath.datum(this.data).transition().duration(this.duration).attr('d', line);
-      this.$lineArea.datum(this.data).style('fill', 'url(#areaGradient)').transition().duration(this.duration).attr('d', area);
+      this.$lineArea.datum(this.data).style('fill', 'url(#stock-chart-widget__area-gradient)').transition().duration(this.duration).attr('d', area);
     }
   }, {
-    key: 'renderCandle',
-    value: function renderCandle(isDay) {
-      var _this4 = this;
+    key: 'updateCandle',
+    value: function updateCandle() {
+      var _this5 = this;
 
-      var dateExtent = d3.extent(this.data, function (_ref13) {
-        var date = _ref13.date;
+      var dateExtent = d3.extent(this.data, function (_ref20) {
+        var date = _ref20.date;
         return date;
       });
       var dataRange = [-1, this.data.length];
@@ -33538,92 +33595,98 @@ var Chart = function () {
         return d.high;
       }));
       this.xBand.domain(d3.range(dataRange[0], dataRange[1]));
-      this.xDateScale.domain(dateExtent);
+      this.xDateScale.domain(dateExtent).nice();
       this.xScale.domain(dataRange);
       this.yScale.domain([yMin, yMax]);
-      var xAxis = d3.axisBottom(this.xDateScale).tickFormat(Chart.getDateFormat(isDay));
+      var xAxis = d3.axisBottom(this.xDateScale).tickFormat(Chart.getDateFormat(this.period));
       var yAxis = d3.axisLeft(this.yScale).tickFormat(d3.format(',.0f'));
       this.$xAxis.transition().duration(this.duration).call(xAxis);
       this.$yAxis.transition().duration(this.duration).call(yAxis);
+      this.$xGrid.transition().duration(this.duration).call(xAxis.tickSize(-this.height).tickFormat(''));
+      this.$yGrid.transition().duration(this.duration).call(yAxis.tickSize(-this.width).tickFormat(''));
       this.$linePath.style('opacity', '0');
       this.$lineArea.style('opacity', '0');
       this.$candleGroup.style('opacity', '1');
-      var $candleRects = this.$candleGroup.selectAll('.chart__candle-candle').data(this.data);
+      var $candleRects = this.$candleGroup.selectAll('.stock-chart-widget__candle-candle').data(this.data);
       $candleRects.exit().transition().duration(this.duration).attr('y', 0).style('opacity', '0').remove();
-      $candleRects.transition().duration(this.duration).attr('class', 'chart__candle-candle').attr('x', function (d, i) {
-        return _this4.xScale(i) - _this4.xBand.bandwidth();
-      }).attr('y', function (_ref14) {
-        var open = _ref14.open,
-            close = _ref14.close;
-        return _this4.yScale(Math.max(open, close));
-      }).attr('width', this.xBand.bandwidth()).attr('height', function (_ref15) {
-        var open = _ref15.open,
-            close = _ref15.close;
-        return open !== close ? _this4.yScale(Math.min(open, close)) - _this4.yScale(Math.max(open, close)) : 1;
-      }).attr('class', function (_ref16) {
-        var open = _ref16.open,
-            close = _ref16.close;
-        return open === close ? 'chart__candle-candle chart__candle_equal' : open > close ? 'chart__candle-candle chart__candle_higher' : 'chart__candle-candle chart__candle_lower';
-      });
-      $candleRects.enter().append('rect').style('opacity', '0').attr('y', this.height).transition().duration(this.duration).attr('class', 'chart__candle-candle').style('opacity', '1').attr('x', function (d, i) {
-        return _this4.xScale(i) - _this4.xBand.bandwidth();
-      }).attr('y', function (_ref17) {
-        var open = _ref17.open,
-            close = _ref17.close;
-        return _this4.yScale(Math.max(open, close));
-      }).attr('width', this.xBand.bandwidth()).attr('height', function (_ref18) {
-        var open = _ref18.open,
-            close = _ref18.close;
-        return open !== close ? _this4.yScale(Math.min(open, close)) - _this4.yScale(Math.max(open, close)) : 1;
-      }).attr('class', function (_ref19) {
-        var open = _ref19.open,
-            close = _ref19.close;
-        return open === close ? 'chart__candle-candle chart__candle_equal' : open > close ? 'chart__candle-candle chart__candle_higher' : 'chart__candle-candle chart__candle_lower';
-      });
-      var $candleLines = this.$candleGroup.selectAll('.chart__candle-stem').data(this.data);
-      $candleLines.exit().transition().duration(this.duration).attr('y1', this.height).attr('y2', this.height).style('opacity', '0').remove();
-      $candleLines.transition().duration(this.duration).attr('class', 'chart__candle-stem').attr('x1', function (d, i) {
-        return _this4.xScale(i) - _this4.xBand.bandwidth() / 2;
-      }).attr('x2', function (d, i) {
-        return _this4.xScale(i) - _this4.xBand.bandwidth() / 2;
-      }).attr('y1', function (_ref20) {
-        var high = _ref20.high;
-        return _this4.yScale(high);
-      }).attr('y2', function (_ref21) {
-        var low = _ref21.low;
-        return _this4.yScale(low);
-      }).attr('class', function (_ref22) {
+      $candleRects.transition().duration(this.duration).attr('class', 'stock-chart-widget__candle-candle').attr('x', function (d, i) {
+        return _this5.xScale(i) - _this5.xBand.bandwidth();
+      }).attr('y', function (_ref21) {
+        var open = _ref21.open,
+            close = _ref21.close;
+        return _this5.yScale(Math.max(open, close));
+      }).attr('width', this.xBand.bandwidth()).attr('height', function (_ref22) {
         var open = _ref22.open,
             close = _ref22.close;
-        return open === close ? 'chart__candle-stem chart__candle_equal' : open > close ? 'chart__candle-stem chart__candle_higher' : 'chart__candle-stem chart__candle_lower';
+        return open !== close ? _this5.yScale(Math.min(open, close)) - _this5.yScale(Math.max(open, close)) : 1;
+      }).attr('class', function (_ref23) {
+        var open = _ref23.open,
+            close = _ref23.close;
+        return open === close ? 'stock-chart-widget__candle-candle stock-chart-widget__candle_equal' : open > close ? 'stock-chart-widget__candle-candle stock-chart-widget__candle_higher' : 'stock-chart-widget__candle-candle stock-chart-widget__candle_lower';
       });
-      $candleLines.enter().append('line').style('opacity', '0').transition().duration(this.duration).attr('class', 'chart__candle-stem').style('opacity', '1').attr('x1', function (d, i) {
-        return _this4.xScale(i) - _this4.xBand.bandwidth() / 2;
-      }).attr('x2', function (d, i) {
-        return _this4.xScale(i) - _this4.xBand.bandwidth() / 2;
-      }).attr('y1', function (_ref23) {
-        var high = _ref23.high;
-        return _this4.yScale(high);
-      }).attr('y2', function (_ref24) {
-        var low = _ref24.low;
-        return _this4.yScale(low);
-      }).attr('class', function (_ref25) {
+      $candleRects.enter().append('rect').style('opacity', '0').attr('y', this.height).transition().duration(this.duration).attr('class', 'stock-chart-widget__candle-candle').style('opacity', '1').attr('x', function (d, i) {
+        return _this5.xScale(i) - _this5.xBand.bandwidth();
+      }).attr('y', function (_ref24) {
+        var open = _ref24.open,
+            close = _ref24.close;
+        return _this5.yScale(Math.max(open, close));
+      }).attr('width', this.xBand.bandwidth()).attr('height', function (_ref25) {
         var open = _ref25.open,
             close = _ref25.close;
-        return open === close ? 'chart__candle-stem chart__candle_equal' : open > close ? 'chart__candle-stem chart__candle_higher' : 'chart__candle-stem chart__candle_lower';
+        return open !== close ? _this5.yScale(Math.min(open, close)) - _this5.yScale(Math.max(open, close)) : 1;
+      }).attr('class', function (_ref26) {
+        var open = _ref26.open,
+            close = _ref26.close;
+        return open === close ? 'stock-chart-widget__candle-candle stock-chart-widget__candle_equal' : open > close ? 'stock-chart-widget__candle-candle stock-chart-widget__candle_higher' : 'stock-chart-widget__candle-candle stock-chart-widget__candle_lower';
+      });
+      var $candleLines = this.$candleGroup.selectAll('.stock-chart-widget__candle-stem').data(this.data);
+      $candleLines.exit().transition().duration(this.duration).attr('y1', this.height).attr('y2', this.height).style('opacity', '0').remove();
+      $candleLines.transition().duration(this.duration).attr('class', 'stock-chart-widget__candle-stem').attr('x1', function (d, i) {
+        return _this5.xScale(i) - _this5.xBand.bandwidth() / 2;
+      }).attr('x2', function (d, i) {
+        return _this5.xScale(i) - _this5.xBand.bandwidth() / 2;
+      }).attr('y1', function (_ref27) {
+        var high = _ref27.high;
+        return _this5.yScale(high);
+      }).attr('y2', function (_ref28) {
+        var low = _ref28.low;
+        return _this5.yScale(low);
+      }).attr('class', function (_ref29) {
+        var open = _ref29.open,
+            close = _ref29.close;
+        return open === close ? 'stock-chart-widget__candle-stem stock-chart-widget__candle_equal' : open > close ? 'stock-chart-widget__candle-stem stock-chart-widget__candle_higher' : 'stock-chart-widget__candle-stem stock-chart-widget__candle_lower';
+      });
+      $candleLines.enter().append('line').style('opacity', '0').transition().duration(this.duration).attr('class', 'stock-chart-widget__candle-stem').style('opacity', '1').attr('x1', function (d, i) {
+        return _this5.xScale(i) - _this5.xBand.bandwidth() / 2;
+      }).attr('x2', function (d, i) {
+        return _this5.xScale(i) - _this5.xBand.bandwidth() / 2;
+      }).attr('y1', function (_ref30) {
+        var high = _ref30.high;
+        return _this5.yScale(high);
+      }).attr('y2', function (_ref31) {
+        var low = _ref31.low;
+        return _this5.yScale(low);
+      }).attr('class', function (_ref32) {
+        var open = _ref32.open,
+            close = _ref32.close;
+        return open === close ? 'stock-chart-widget__candle-stem stock-chart-widget__candle_equal' : open > close ? 'stock-chart-widget__candle-stem stock-chart-widget__candle_higher' : 'stock-chart-widget__candle-stem stock-chart-widget__candle_lower';
       });
     }
   }, {
-    key: 'renderChart',
-    value: function renderChart(isDay) {
+    key: 'render',
+    value: function render() {
       if (this.$mainGroup) {
         console.warn('Chart is already rendered');
         return;
       }
-      var parentNode = this.$container.node().parentNode;
-      this.width = parentNode.clientWidth - this.marginLeft - this.marginRight;
-      this.height = parentNode.clientHeight - this.marginTop - this.marginBottom;
-      this.$mainGroup = this.$container.append('g').attr('class', 'chart__main-group').attr('transform', 'translate(' + this.marginLeft + ', ' + this.marginTop + ')');
+
+      var _$container$node = this.$container.node(),
+          clientWidth = _$container$node.clientWidth,
+          clientHeight = _$container$node.clientHeight;
+
+      this.width = clientWidth - this.marginLeft - this.marginRight;
+      this.height = clientHeight - this.marginTop - this.marginBottom;
+      this.$mainGroup = this.$container.append('g').attr('class', 'stock-chart-widget__main-group').attr('transform', 'translate(' + this.marginLeft + ', ' + this.marginTop + ')');
       /* axis */
       this.xBand = d3.scaleBand().rangeRound([0, this.width]).padding(0.5);
       this.xDateScale = d3.scaleTime().rangeRound([0, this.width]);
@@ -33631,510 +33694,334 @@ var Chart = function () {
       this.yScale = d3.scaleLinear().rangeRound([this.height, 0]);
       var xAxis = d3.axisBottom(this.xScale).tickFormat('');
       var yAxis = d3.axisLeft(this.yScale).tickFormat('');
-      this.$xAxis = this.$mainGroup.append('g').attr('class', 'chart__x-axis').attr('transform', 'translate(0, ' + this.height + ')').call(xAxis);
-      this.$yAxis = this.$mainGroup.append('g').attr('class', 'chart__y-axis').call(yAxis);
-      /* grid */
-      this.$mainGroup.append('g').attr('class', 'chart__grid').attr('transform', 'translate(0, ' + this.height + ')').call(xAxis.tickSize(-this.height).tickFormat(''));
-      this.$mainGroup.append('g').attr('class', 'chart__grid').call(yAxis.tickSize(-this.width).tickFormat(''));
-      /* focus */
-      this.$xFocusLine = this.$mainGroup.append('line').attr('class', 'chart__x-focus-line').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', this.height);
-      this.$yFocusLine = this.$mainGroup.append('line').attr('class', 'chart__y-focus-line').attr('x1', 0).attr('y1', this.height).attr('x2', this.width).attr('y2', this.height);
-      this.$focusGroup = this.$mainGroup.append('g').attr('class', 'chart__focus-group');
+      this.$xAxis = this.$mainGroup.append('g').attr('class', 'stock-chart-widget__x-axis').attr('transform', 'translate(0, ' + this.height + ')').call(xAxis);
+      this.$yAxis = this.$mainGroup.append('g').attr('class', 'stock-chart-widget__y-axis').call(yAxis);
       var xAxisHeight = this.$xAxis.node().getBBox().height;
-      this.$xFocusValueGroup = this.$focusGroup.append('g').attr('transform', 'translate(0, ' + (this.height + xAxisHeight) + ')');
-      this.$xFocusValueRect = this.$xFocusValueGroup.append('rect').attr('class', 'chart__focus-value-rect').attr('x', 0).attr('y', 0);
-      this.$xFocusValue = this.$xFocusValueGroup.append('text').attr('class', 'chart__focus-value').attr('x', 0).attr('y', 0);
       var yAxisWidth = this.$yAxis.node().getBBox().width;
-      this.$yFocusValueGroup = this.$focusGroup.append('g').attr('transform', 'translate(' + -1 * yAxisWidth + ', 0)');
-      this.$yFocusValueRect = this.$yFocusValueGroup.append('rect').attr('class', 'chart__focus-value-rect').attr('x', 0).attr('y', 0);
-      this.$yFocusValue = this.$yFocusValueGroup.append('text').attr('class', 'chart__focus-value').attr('x', 0).attr('y', 0);
+      /* grid */
+      this.$xGrid = this.$mainGroup.append('g').attr('class', 'stock-chart-widget__grid').attr('transform', 'translate(0, ' + this.height + ')').call(xAxis.tickSize(-this.height).tickFormat(''));
+      this.$yGrid = this.$mainGroup.append('g').attr('class', 'stock-chart-widget__grid').call(yAxis.tickSize(-this.width).tickFormat(''));
       /* line */
-      var $areaGradient = this.$mainGroup.append('defs').append('linearGradient').attr('id', 'areaGradient').attr('x1', '0%').attr('y1', '0%').attr('x2', '0%').attr('y2', '100%');
-      $areaGradient.append('stop').attr('class', 'chart__area-gradient-stop').attr('offset', '0%').attr('stop-opacity', 0.6);
-      $areaGradient.append('stop').attr('class', 'chart__area-gradient-stop').attr('offset', '80%').attr('stop-opacity', 0);
-      this.$linePath = this.$mainGroup.append('path').attr('class', 'chart__line-path');
-      this.$lineArea = this.$mainGroup.append('path').attr('class', 'chart__line-area');
+      var $areaGradient = this.$mainGroup.append('defs').append('linearGradient').attr('id', 'stock-chart-widget__area-gradient').attr('x1', '0%').attr('y1', '0%').attr('x2', '0%').attr('y2', '100%');
+      $areaGradient.append('stop').attr('class', 'stock-chart-widget__area-gradient-stop').attr('offset', '0%').attr('stop-opacity', 0.6);
+      $areaGradient.append('stop').attr('class', 'stock-chart-widget__area-gradient-stop').attr('offset', '80%').attr('stop-opacity', 0);
+      this.$linePath = this.$mainGroup.append('path').attr('class', 'stock-chart-widget__line-path');
+      this.$lineArea = this.$mainGroup.append('path').attr('class', 'stock-chart-widget__line-area');
       /* candle */
-      this.$candleGroup = this.$mainGroup.append('g').attr('class', 'chart__candle-group');
-      this.$candleGroup.selectAll('.chart__candle-candle');
-      this.$candleGroup.selectAll('.chart__candle-stem');
+      this.$candleGroup = this.$mainGroup.append('g').attr('class', 'stock-chart-widget__candle-group');
+      this.$candleGroup.selectAll('.stock-chart-widget__candle-candle');
+      this.$candleGroup.selectAll('.stock-chart-widget__candle-stem');
+      /* price */
+      this.$priceGroup = this.$mainGroup.append('g').attr('transform', 'translate(' + -1 * yAxisWidth + ', 0)');
+      this.$priceRect = this.$priceGroup.append('rect').attr('class', 'stock-chart-widget__price-rect').attr('x', 0).attr('y', 0);
+      this.$priceValue = this.$priceGroup.append('text').attr('class', 'stock-chart-widget__price-value').attr('x', 0).attr('y', 0);
+      this.$priceLine = this.$mainGroup.append('line').attr('class', 'stock-chart-widget__price-line').attr('x1', 0).attr('y1', this.height).attr('x2', this.width).attr('y2', this.height);
+      /* focus */
+      this.$focusGroup = this.$mainGroup.append('g').attr('class', 'stock-chart-widget__focus-group');
+      this.$xFocusValueGroup = this.$focusGroup.append('g').attr('transform', 'translate(0, ' + (this.height + xAxisHeight) + ')');
+      this.$xFocusValueRect = this.$xFocusValueGroup.append('rect').attr('class', 'stock-chart-widget__focus-value-rect').attr('x', 0).attr('y', 0);
+      this.$xFocusValue = this.$xFocusValueGroup.append('text').attr('class', 'stock-chart-widget__focus-value').attr('x', 0).attr('y', 0);
+      this.$yFocusValueGroup = this.$focusGroup.append('g').attr('transform', 'translate(' + -1 * yAxisWidth + ', 0)');
+      this.$yFocusValueRect = this.$yFocusValueGroup.append('rect').attr('class', 'stock-chart-widget__focus-value-rect').attr('x', 0).attr('y', 0);
+      this.$yFocusValue = this.$yFocusValueGroup.append('text').attr('class', 'stock-chart-widget__focus-value').attr('x', 0).attr('y', 0);
+      this.$xFocusLine = this.$mainGroup.append('line').attr('class', 'stock-chart-widget__x-focus-line').attr('x1', 0).attr('y1', 0).attr('x2', 0).attr('y2', this.height);
+      this.$yFocusLine = this.$mainGroup.append('line').attr('class', 'stock-chart-widget__y-focus-line').attr('x1', 0).attr('y1', this.height).attr('x2', this.width).attr('y2', this.height);
       /* focus overlay */
-      this.$focusOverlay = this.$mainGroup.append('rect').attr('class', 'chart__focus-overlay').attr('width', this.width).attr('height', this.height).on('mouseover', this.handleMouseOver.bind(isDay)).on('mouseout', this.handleMouseOut).on('mousemove', this.handleMouseMove);
+      this.$focusOverlay = this.$mainGroup.append('rect').attr('class', 'stock-chart-widget__focus-overlay').attr('width', this.width).attr('height', this.height).on('mouseover', this.handleMouseOver).on('mouseout', this.handleMouseOut).on('mousemove', this.handleMouseMove);
     }
   }]);
 
   return Chart;
 }();
 
-/*
-const renderLineChart = ($chart, rawData, state) => {
-  if (!rawData.length) {
-    return;
-  }
-  $chart.selectAll('*').remove();
-  const isDayPeriod = state.get('period') === '1d';
-  const valueFormat = d3.format(',.2f');
-  const dateFormat = isDayPeriod ? d3.timeFormat('%H:%M') : d3.timeFormat('%x');
-  const margin = { top: 20, right: 20, bottom: 40, left: 60 };
-  const width = +$chart.attr('width') - margin.left - margin.right;
-  const height = +$chart.attr('height') - margin.top - margin.bottom;
+var Widget = function () {
+  function Widget(props) {
+    _classCallCheck(this, Widget);
 
-  const x = d3.scaleTime().rangeRound([0, width]);
-  const y = d3.scaleLinear().range([height, 0]);
-  const xAxis = d3.axisBottom(x).ticks(5, dateFormat);
-  const yAxis = d3.axisLeft(y).tickFormat(d3.format(',.0f'));
-  const line = d3.line()
-    .x(({ date }) => x(date))
-    .y(({ close, high }) => y(isDayPeriod ? high : close));
-  const area = d3.area()
-    .x(({ date }) => x(date))
-    .y0(height)
-    .y1(({ close, high }) => y(isDayPeriod ? high : close));
+    var rootSelector = props.rootSelector;
 
-  const $group = $chart.append('g').attr('class', 'inner')
-    .attr('transform', `translate(${margin.left}, ${margin.top})`);
-  const $path = $group.append('path');
-
-  const data = rawData.map(item => {
-    item.date = isDayPeriod ?
-      d3.timeParse('%Y%m%d %H:%M')(`${item.date} ${item.minute}`) :
-      d3.timeParse('%Y-%m-%d')(item.date);
-    return item;
-  });
-  x.domain(d3.extent(data, ({ date }) => date));
-  y.domain(d3.extent(data, ({ close, high }) => isDayPeriod ? high : close));
-
-  const $xAxis = $group.append('g').attr('class', 'xAxis')
-    .attr('transform', `translate(0, ${height})`).call(xAxis);
-  const $yAxis = $group.append('g').attr('class', 'yAxis')
-    .call(yAxis);
-
-  $group.append('g').attr('class', 'grid')
-    .attr('transform', `translate(0, ${height})`)
-    .call(xAxis.tickSize(-height).tickFormat(''));
-  $group.append('g').attr('class', 'grid')
-    .call(yAxis.tickSize(-width).tickFormat(''));
-
-  $path.datum(data).attr('class', 'linePath').attr('d', line);
-
-  const $xLine = $group.append('line')
-    .attr('x1', 0)
-    .attr('y1', 0)
-    .attr('x2', 0)
-    .attr('y2', height)
-    .attr('class', 'xLine');
-  const $yLine = $group.append('line')
-    .attr('x1', 0)
-    .attr('y1', height)
-    .attr('x2', width)
-    .attr('y2', height)
-    .attr('class', 'yLine');
-
-  const areaGradient = $group.append('defs')
-    .append('linearGradient')
-    .attr('id', 'areaGradient')
-    .attr('x1', '0%').attr('y1', '0%')
-    .attr('x2', '0%').attr('y2', '100%');
-  areaGradient.append('stop')
-    .attr('offset', '0%')
-    .attr('stop-color', '#21825C')
-    .attr('stop-opacity', 0.6);
-  areaGradient.append('stop')
-    .attr('offset', '80%')
-    .attr('stop-color', 'white')
-    .attr('stop-opacity', 0);
-  $group.append('path').attr('class', 'area')
-    .datum(data).style('fill', 'url(#areaGradient)').attr('d', area);
-
-  const bisectDate = d3.bisector(({ date }) => date).left;
-  const $focus = $group.append('g').attr('class', 'focus');
-  const xAxisHeight = $xAxis.node().getBBox().height;
-  const $xValueGroup = $focus.append('g').attr('transform', `translate(0, ${height + xAxisHeight})`);
-  const $xValueRect = $xValueGroup.append('rect').attr('class', 'focusValueRect').attr('x', 0).attr('y', 0);
-  const $xValue = $xValueGroup.append('text').attr('class', 'focusValue').attr('x', 0).attr('y', 0);
-  const yAxisWidth = $yAxis.node().getBBox().width;
-  const $yValueGroup = $focus.append('g').attr('transform', `translate(${-1 * yAxisWidth}, 0)`);
-  const $yValueRect = $yValueGroup.append('rect').attr('class', 'focusValueRect').attr('x', 0).attr('y', 0);
-  const $yValue = $yValueGroup.append('text').attr('class', 'focusValue').attr('x', 0).attr('y', 0);
-  $group.append('rect').attr('class', 'focusOverlay').attr('width', width).attr('height', height)
-    .on('mouseover', () => {
-      $focus.style('opacity', '1');
-      $xLine.style('opacity', '1');
-      $yLine.style('opacity', '1');
-    })
-    .on('mouseout', () => {
-      $focus.style('opacity', '0');
-      $xLine.style('opacity', '0');
-      $yLine.style('opacity', '0');
-    })
-    .on('mousemove', () => {
-      const [xCoordinate, yCoordinate] = d3.mouse($group.node());
-      const x0 = x.invert(xCoordinate);
-      const i = bisectDate(data, x0, 1);
-      const d0 = data[i - 1];
-      const d1 = data[i];
-      const d = x0 - d0.date > d1.date - x0 ? d1 : d0;
-
-      $xValue.text(dateFormat(d.date));
-      const { width: xValueWidth, height: xValueHeight } = $xValue.node().getBBox();
-      const xRectWidth = xValueWidth + 12;
-      const xRectHeight = xValueHeight + 8;
-      $xValueGroup.attr('transform', `translate(${xCoordinate}, ${height + xRectHeight / 2})`);
-      $xValueRect.attr('width', xRectWidth).attr('height', xRectHeight)
-        .attr('transform', `translate(${-1 * xRectWidth / 2}, ${-1 * xRectHeight / 2})`);
-
-      $yValue.text(valueFormat(isDayPeriod ? d.high : d.close));
-      const { width: yValueWidth, height: yValueHeight } = $yValue.node().getBBox();
-      const yRectWidth = yValueWidth + 12;
-      const yRectHeight = yValueHeight + 8;
-      $yValueGroup.attr('transform', `translate(${-1 * yRectWidth / 2}, ${yCoordinate})`);
-      $yValueRect.attr('width', yRectWidth).attr('height', yRectHeight)
-        .attr('transform', `translate(${-1 * yRectWidth / 2}, ${-1 * yRectHeight / 2})`);
-
-      $xLine.attr('x1', xCoordinate).attr('x2', xCoordinate);
-      $yLine.attr('y1', yCoordinate).attr('y2', yCoordinate);
-
-      state.update('open', valueFormat(d.open));
-      state.update('high', valueFormat(d.high));
-      state.update('low', valueFormat(d.low));
-      state.update('close', valueFormat(d.close));
+    this.rootSelector = rootSelector;
+    this.state = new State({
+      symbol: 'aapl',
+      open: '—',
+      high: '—',
+      low: '—',
+      close: '—',
+      period: '6m',
+      type: 'line',
+      isFetching: false,
+      stocksData: [],
+      stockPrice: '—'
     });
-};
-*/
-/*
-const renderCandleChart = ($chart, rawData, state) => {
-  if (!rawData.length) {
-    return;
+    this.stockDataRefreshRate = 1000 * 30;
+    this.handleStateUpdateRequest = this.handleStateUpdateRequest.bind(this);
   }
-  $chart.selectAll('*').remove();
-  const isDayPeriod = state.get('period') === '1d';
-  const valueFormat = d3.format(',.2f');
-  const dateFormat = isDayPeriod ? d3.timeFormat('%H:%M') : d3.timeFormat('%d.%m.%y');
-  const bisectDate = d3.bisector(({ date }) => date).left;
-  const margin = { top: 20, right: 20, bottom: 40, left: 60 };
-  const width = +$chart.attr('width') - margin.left - margin.right;
-  const height = +$chart.attr('height') - margin.top - margin.bottom;
 
-  const $group = $chart.append('g').attr('class', 'inner')
-    .attr('transform', `translate(${margin.left}, ${margin.top})`);
+  _createClass(Widget, [{
+    key: 'fetchStockPrice',
+    value: function () {
+      var _ref33 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(symbol) {
+        var url, data;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.prev = 0;
+                url = 'https://api.iextrading.com/1.0/stock/' + symbol + '/ohlc';
+                _context.next = 4;
+                return d3.json(url);
 
-  const datesList = [];
-  const data = rawData.map(item => {
-    item.date = isDayPeriod ?
-      d3.timeParse('%Y%m%d %H:%M')(`${item.date} ${item.minute}`) :
-      d3.timeParse('%Y-%m-%d')(item.date);
-    datesList.push(item.date);
-    return item;
-  });
+              case 4:
+                data = _context.sent;
 
-  const dateExtent = d3.extent(data, ({ date }) => date);
-  const xDateScale = d3.scaleTime().domain(dateExtent).rangeRound([0, width]);
-  const xScale = d3.scaleLinear().domain([-1, datesList.length]).rangeRound([0, width]);
-  const xBand = d3.scaleBand().domain(d3.range(-1, datesList.length)).rangeRound([0, width]).padding(0.5);
-  const xAxis = d3.axisBottom(xDateScale).ticks(5, dateFormat);
+                this.state.update('stockPrice', data);
+                _context.next = 11;
+                break;
 
-  const yMin = d3.min(data.map(d => d.low));
-  const yMax = d3.max(data.map(d => d.high));
-  const yScale = d3.scaleLinear().domain([yMin, yMax]).rangeRound([height, 0]).nice();
-  const yAxis = d3.axisLeft(yScale).tickFormat(d3.format(',.0f'));
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context['catch'](0);
 
-  const $xAxis = $group.append('g').attr('class', 'xAxis')
-    .attr('transform', `translate(0, ${height})`).call(xAxis);
-  const $yAxis = $group.append('g').attr('class', 'yAxis')
-    .call(yAxis);
+                console.warn(_context.t0);
 
-  $group.append('g').attr('class', 'grid')
-    .attr('transform', `translate(0, ${height})`)
-    .call(xAxis.tickSize(-height).tickFormat(''));
-  $group.append('g').attr('class', 'grid')
-    .call(yAxis.tickSize(-width).tickFormat(''));
+              case 11:
+              case 'end':
+                return _context.stop();
+            }
+          }
+        }, _callee, this, [[0, 8]]);
+      }));
 
-  const $candleGroup = $group.append('g').attr('class', 'candleGroup');
-  $candleGroup.selectAll('.candle').data(data).enter()
-    .append('rect').attr('class', 'candle')
-    .attr('x', (d, i) => xScale(i) - xBand.bandwidth())
-    .attr('y', ({ open, close }) => yScale(Math.max(open, close)))
-    .attr('width', xBand.bandwidth())
-    .attr('height', ({ open, close }) => (open === close) ?
-      1 :
-      yScale(Math.min(open, close)) - yScale(Math.max(open, close))
-    )
-    .attr('class', ({ open, close }) => (open === close) ?
-      'equal' :
-      (open > close) ?
-        'higher' :
-        'lower'
-    );
-  $candleGroup.selectAll('.stem').data(data).enter()
-    .append('line').attr('class', 'stem')
-    .attr('x1', (d, i) => xScale(i) - xBand.bandwidth() / 2)
-    .attr('x2', (d, i) => xScale(i) - xBand.bandwidth() / 2)
-    .attr('y1', ({ high }) => yScale(high))
-    .attr('y2', ({ low }) => yScale(low))
-    .attr('class', ({ open, close }) => (open === close) ?
-      'equal' :
-      (open > close) ?
-        'higher' :
-        'lower'
-    );
-
-  const $xLine = $group.append('line')
-    .attr('x1', 0)
-    .attr('y1', 0)
-    .attr('x2', 0)
-    .attr('y2', height)
-    .attr('class', 'xLine');
-  const $yLine = $group.append('line')
-    .attr('x1', 0)
-    .attr('y1', height)
-    .attr('x2', width)
-    .attr('y2', height)
-    .attr('class', 'yLine');
-
-  const $focus = $group.append('g').attr('class', 'focus');
-  const xAxisHeight = $xAxis.node().getBBox().height;
-  const $xValueGroup = $focus.append('g').attr('transform', `translate(0, ${height + xAxisHeight})`);
-  const $xValueRect = $xValueGroup.append('rect').attr('class', 'focusValueRect').attr('x', 0).attr('y', 0);
-  const $xValue = $xValueGroup.append('text').attr('class', 'focusValue').attr('x', 0).attr('y', 0);
-  const yAxisWidth = $yAxis.node().getBBox().width;
-  const $yValueGroup = $focus.append('g').attr('transform', `translate(${-1 * yAxisWidth}, 0)`);
-  const $yValueRect = $yValueGroup.append('rect').attr('class', 'focusValueRect').attr('x', 0).attr('y', 0);
-  const $yValue = $yValueGroup.append('text').attr('class', 'focusValue').attr('x', 0).attr('y', 0);
-  $group.append('rect').attr('class', 'focusOverlay').attr('width', width).attr('height', height)
-    .on('mouseover', () => {
-      $focus.style('opacity', '1');
-      $xLine.style('opacity', '1');
-      $yLine.style('opacity', '1');
-    })
-    .on('mouseout', () => {
-      $focus.style('opacity', '0');
-      $xLine.style('opacity', '0');
-      $yLine.style('opacity', '0');
-    })
-    .on('mousemove', () => {
-      const [xCoordinate, yCoordinate] = d3.mouse($focus.node());
-      const xDate = xDateScale.invert(xCoordinate);
-      const i = bisectDate(data, xDate, 1);
-      const dataItemPrev = data[i - 1];
-      const dataItem = data[i];
-      const coordinateData = xDate - dataItemPrev.date > dataItem.date - xDate ?
-        dataItem :
-        dataItemPrev;
-      const {date, open, high, low, close } = coordinateData;
-
-      $xValue.text(dateFormat(date));
-      const { width: xValueWidth, height: xValueHeight } = $xValue.node().getBBox();
-      const xRectWidth = xValueWidth + 12;
-      const xRectHeight = xValueHeight + 8;
-      $xValueGroup.attr('transform', `translate(${xCoordinate}, ${height + xRectHeight / 2})`);
-      $xValueRect.attr('width', xRectWidth).attr('height', xRectHeight)
-        .attr('transform', `translate(${-1 * xRectWidth / 2}, ${-1 * xRectHeight / 2})`);
-
-      $yValue.text(valueFormat(isDayPeriod ? high : close));
-      const { width: yValueWidth, height: yValueHeight } = $yValue.node().getBBox();
-      const yRectWidth = yValueWidth + 12;
-      const yRectHeight = yValueHeight + 8;
-      $yValueGroup.attr('transform', `translate(${-1 * yRectWidth / 2}, ${yCoordinate})`);
-      $yValueRect.attr('width', yRectWidth).attr('height', yRectHeight)
-        .attr('transform', `translate(${-1 * yRectWidth / 2}, ${-1 * yRectHeight / 2})`);
-
-      $xLine.attr('x1', xCoordinate).attr('x2', xCoordinate);
-      $yLine.attr('y1', yCoordinate).attr('y2', yCoordinate);
-
-      state.update('open', valueFormat(open));
-      state.update('high', valueFormat(high));
-      state.update('low', valueFormat(low));
-      state.update('close', valueFormat(close));
-    });
-};
-*/
-
-var init = function () {
-  var _ref26 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
-    var $title, $symbol, $open, $high, $low, $close, $container, $period, $type, state, isPeriodOneDay, chart;
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            d3.timeFormatDefaultLocale(ruTimeLocale);
-            $title = d3.select('#chart__title');
-            $symbol = d3.select('#chart__symbol');
-            $open = d3.select('#chart__open');
-            $high = d3.select('#chart__high');
-            $low = d3.select('#chart__low');
-            $close = d3.select('#chart__close');
-            $container = d3.select('#chart__container');
-            $period = d3.select('#chart__period');
-            $type = d3.select('#chart__type');
-            state = new State({
-              symbol: 'aapl',
-              open: '-',
-              high: '-',
-              low: '-',
-              close: '-',
-              period: '3m',
-              type: 'candle',
-              stocksData: []
-            });
-
-            isPeriodOneDay = function isPeriodOneDay() {
-              return state.get('period') === '1d';
-            };
-
-            chart = new Chart({
-              $container: $container,
-              requestStateUpdate: function requestStateUpdate(nextState) {
-                Object.entries(nextState).forEach(function (_ref27) {
-                  var _ref28 = _slicedToArray(_ref27, 2),
-                      name = _ref28[0],
-                      value = _ref28[1];
-
-                  return state.update(name, value);
-                });
-              }
-            });
-
-            chart.renderChart(isPeriodOneDay());
-            listenRadioGroupChanges($symbol, function () {
-              var value = this.value;
-
-              state.update('symbol', value);
-            }, state.get('symbol'));
-            listenRadioGroupChanges($period, function () {
-              var value = this.value;
-
-              state.update('period', value);
-            }, state.get('period'));
-            listenRadioGroupChanges($type, function () {
-              var value = this.value;
-
-              state.update('type', value);
-            }, state.get('type'));
-            state.subscribe('symbol', function () {
-              var _ref29 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(value) {
-                var period, stocksData;
-                return regeneratorRuntime.wrap(function _callee2$(_context2) {
-                  while (1) {
-                    switch (_context2.prev = _context2.next) {
-                      case 0:
-                        $title.text('\u0413\u0440\u0430\u0444\u0438\u043A \u0430\u043A\u0446\u0438\u0439 ' + value.toUpperCase());
-                        period = state.get('period');
-                        _context2.next = 4;
-                        return fetchStockData(value, period);
-
-                      case 4:
-                        stocksData = _context2.sent;
-
-                        stocksData && stocksData.length && state.update('stocksData', stocksData);
-
-                      case 6:
-                      case 'end':
-                        return _context2.stop();
-                    }
-                  }
-                }, _callee2, _this);
-              }));
-
-              return function (_x4) {
-                return _ref29.apply(this, arguments);
-              };
-            }());
-            state.subscribe('period', function () {
-              var _ref30 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(value) {
-                var symbol, stocksData;
-                return regeneratorRuntime.wrap(function _callee3$(_context3) {
-                  while (1) {
-                    switch (_context3.prev = _context3.next) {
-                      case 0:
-                        symbol = state.get('symbol');
-                        _context3.next = 3;
-                        return fetchStockData(symbol, value);
-
-                      case 3:
-                        stocksData = _context3.sent;
-
-                        stocksData && stocksData.length && state.update('stocksData', stocksData);
-
-                      case 5:
-                      case 'end':
-                        return _context3.stop();
-                    }
-                  }
-                }, _callee3, _this);
-              }));
-
-              return function (_x5) {
-                return _ref30.apply(this, arguments);
-              };
-            }());
-            state.subscribe('open', function (value) {
-              $open.text(value);
-            });
-            state.subscribe('high', function (value) {
-              $high.text(value);
-            });
-            state.subscribe('low', function (value) {
-              $low.text(value);
-            });
-            state.subscribe('close', function (value) {
-              $close.text(value);
-            });
-            state.subscribe('stocksData', function (value) {
-              var type = state.get('type');
-              var isDay = isPeriodOneDay();
-              chart.updateData(value, isDay);
-              type === 'line' ? chart.renderLine(isDay) : chart.renderCandle(isDay);
-            });
-            state.subscribe('type', function (value) {
-              var isDay = isPeriodOneDay();
-              value === 'line' ? chart.renderLine(isDay) : chart.renderCandle(isDay);
-            });
-            state.callAllSubscribers();
-
-          case 26:
-          case 'end':
-            return _context4.stop();
-        }
+      function fetchStockPrice(_x2) {
+        return _ref33.apply(this, arguments);
       }
-    }, _callee4, _this);
-  }));
 
-  return function init() {
-    return _ref26.apply(this, arguments);
-  };
+      return fetchStockPrice;
+    }()
+  }, {
+    key: 'fetchStockData',
+    value: function () {
+      var _ref34 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(symbol, period) {
+        var url, data;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                if (!this.state.get('isFetching')) {
+                  _context2.next = 2;
+                  break;
+                }
+
+                return _context2.abrupt('return');
+
+              case 2:
+                this.state.update('isFetching', true);
+                _context2.prev = 3;
+                url = 'https://api.iextrading.com/1.0/stock/' + symbol + '/chart/' + period;
+                _context2.next = 7;
+                return d3.json(url);
+
+              case 7:
+                data = _context2.sent;
+
+                this.state.update('stocksData', data);
+                _context2.next = 14;
+                break;
+
+              case 11:
+                _context2.prev = 11;
+                _context2.t0 = _context2['catch'](3);
+
+                console.warn(_context2.t0);
+
+              case 14:
+                _context2.prev = 14;
+
+                this.state.update('isFetching', false);
+                _context2.next = 18;
+                return this.fetchStockPrice(symbol);
+
+              case 18:
+                return _context2.finish(14);
+
+              case 19:
+              case 'end':
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this, [[3, 11, 14, 19]]);
+      }));
+
+      function fetchStockData(_x3, _x4) {
+        return _ref34.apply(this, arguments);
+      }
+
+      return fetchStockData;
+    }()
+  }, {
+    key: 'refreshStockData',
+    value: function refreshStockData() {
+      var symbol = this.state.get('symbol');
+      var period = this.state.get('period');
+      this.chart.updatePeriod(period);
+      this.$heading.text('\u0413\u0440\u0430\u0444\u0438\u043A \u0430\u043A\u0446\u0438\u0439 ' + symbol.toUpperCase());
+      this.fetchStockData(symbol, period);
+    }
+  }, {
+    key: 'replaceScript',
+    value: function replaceScript() {
+      var root = this.$root.node();
+      var parent = root.parentNode;
+      var article = this.$article.node();
+      parent.appendChild(article);
+      parent.removeChild(root);
+    }
+  }, {
+    key: 'handleStateUpdateRequest',
+    value: function handleStateUpdateRequest(nextState) {
+      var _this6 = this;
+
+      Object.entries(nextState).forEach(function (_ref35) {
+        var _ref36 = _slicedToArray(_ref35, 2),
+            name = _ref36[0],
+            value = _ref36[1];
+
+        return _this6.state.update(name, value);
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this7 = this;
+
+      this.$root = d3.select(this.rootSelector);
+      this.$article = this.$root.append('article').attr('class', 'stock-chart-widget');
+      this.replaceScript();
+      var $header = this.$article.append('header').attr('class', 'stock-chart-widget__header');
+      this.$heading = $header.append('h1').attr('class', 'stock-chart-widget__title');
+      var symbolRadioField = new RadioField({
+        $parent: $header,
+        name: 'symbol',
+        defaultValue: this.state.get('symbol'),
+        items: SYMBOLS,
+        requestStateUpdate: this.handleStateUpdateRequest
+      });
+      symbolRadioField.render();
+      var $main = this.$article.append('main').attr('class', 'stock-chart-widget__main');
+      var ohlc = new OHLC({
+        $parent: $main,
+        items: OHLC_LIST
+      });
+      ohlc.render();
+      var $chart = $main.append('svg').attr('class', 'stock-chart-widget__container');
+      this.chart = new Chart({
+        $parent: $chart,
+        period: this.state.get('period'),
+        requestStateUpdate: this.handleStateUpdateRequest
+      });
+      var $footer = this.$article.append('footer').attr('class', 'stock-chart-widget__footer');
+      var periodRadioField = new RadioField({
+        $parent: $footer,
+        name: 'period',
+        defaultValue: this.state.get('period'),
+        items: PERIODS,
+        requestStateUpdate: this.handleStateUpdateRequest
+      });
+      periodRadioField.render();
+      var typeRadioField = new RadioField({
+        $parent: $footer,
+        name: 'type',
+        defaultValue: this.state.get('type'),
+        items: TYPES,
+        requestStateUpdate: this.handleStateUpdateRequest
+      });
+      typeRadioField.render();
+      typeRadioField.$list.classed('stock-chart-widget__footer-type-list', true);
+      this.chart.render();
+      this.state.subscribe('symbol', function () {
+        return _this7.refreshStockData();
+      });
+      this.state.subscribe('period', function () {
+        return _this7.refreshStockData();
+      });
+      this.state.subscribe('open', function (open) {
+        ohlc.updateValue('open', open);
+      });
+      this.state.subscribe('high', function (high) {
+        ohlc.updateValue('high', high);
+      });
+      this.state.subscribe('low', function (low) {
+        ohlc.updateValue('low', low);
+      });
+      this.state.subscribe('close', function (close) {
+        ohlc.updateValue('close', close);
+      });
+      this.state.subscribe('stocksData', function (stocksData) {
+        _this7.chart.updateData(stocksData);
+        _this7.state.get('type') === 'line' ? _this7.chart.updateLine() : _this7.chart.updateCandle();
+      });
+      this.state.subscribe('type', function (type) {
+        type === 'line' ? _this7.chart.updateLine() : _this7.chart.updateCandle();
+      });
+      this.state.subscribe('isFetching', function (isFetching) {
+        _this7.$article.classed('stock-chart-widget_loading', isFetching);
+        if (isFetching) {
+          symbolRadioField.disable();
+          periodRadioField.disable();
+          typeRadioField.disable();
+        } else {
+          symbolRadioField.enable();
+          periodRadioField.enable();
+          typeRadioField.enable();
+        }
+      });
+      this.state.subscribe('stockPrice', function (stockPrice) {
+        _this7.chart.updatePrice(stockPrice);
+      });
+      this.refreshStockData();
+      setInterval(function () {
+        return _this7.refreshStockData();
+      }, this.stockDataRefreshRate);
+    }
+  }]);
+
+  return Widget;
 }();
 
-_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee5() {
-  return regeneratorRuntime.wrap(function _callee5$(_context5) {
+var documentReady = function documentReady() {
+  return new Promise(function (resolve) {
+    document.readyState === 'complete' ? resolve() : window.addEventListener('load', resolve, true);
+  });
+};
+
+_asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+  return regeneratorRuntime.wrap(function _callee3$(_context3) {
     while (1) {
-      switch (_context5.prev = _context5.next) {
+      switch (_context3.prev = _context3.next) {
         case 0:
-          _context5.prev = 0;
-          _context5.next = 3;
+          _context3.prev = 0;
+          _context3.next = 3;
           return documentReady();
 
         case 3:
-          _context5.next = 5;
-          return init();
-
-        case 5:
-          _context5.next = 10;
+          new Widget({ rootSelector: '[data-stock-chart-widget]' }).render();
+          _context3.next = 9;
           break;
 
-        case 7:
-          _context5.prev = 7;
-          _context5.t0 = _context5['catch'](0);
+        case 6:
+          _context3.prev = 6;
+          _context3.t0 = _context3['catch'](0);
 
-          console.warn(_context5.t0);
+          console.warn(_context3.t0);
 
-        case 10:
+        case 9:
         case 'end':
-          return _context5.stop();
+          return _context3.stop();
       }
     }
-  }, _callee5, _this, [[0, 7]]);
+  }, _callee3, _this8, [[0, 6]]);
 }))();
-},{"core-js/modules/es6.typed.array-buffer":"../node_modules/core-js/modules/es6.typed.array-buffer.js","core-js/modules/es6.typed.int8-array":"../node_modules/core-js/modules/es6.typed.int8-array.js","core-js/modules/es6.typed.uint8-array":"../node_modules/core-js/modules/es6.typed.uint8-array.js","core-js/modules/es6.typed.uint8-clamped-array":"../node_modules/core-js/modules/es6.typed.uint8-clamped-array.js","core-js/modules/es6.typed.int16-array":"../node_modules/core-js/modules/es6.typed.int16-array.js","core-js/modules/es6.typed.uint16-array":"../node_modules/core-js/modules/es6.typed.uint16-array.js","core-js/modules/es6.typed.int32-array":"../node_modules/core-js/modules/es6.typed.int32-array.js","core-js/modules/es6.typed.uint32-array":"../node_modules/core-js/modules/es6.typed.uint32-array.js","core-js/modules/es6.typed.float32-array":"../node_modules/core-js/modules/es6.typed.float32-array.js","core-js/modules/es6.typed.float64-array":"../node_modules/core-js/modules/es6.typed.float64-array.js","core-js/modules/es6.map":"../node_modules/core-js/modules/es6.map.js","core-js/modules/es6.set":"../node_modules/core-js/modules/es6.set.js","core-js/modules/es6.weak-map":"../node_modules/core-js/modules/es6.weak-map.js","core-js/modules/es6.weak-set":"../node_modules/core-js/modules/es6.weak-set.js","core-js/modules/es6.reflect.apply":"../node_modules/core-js/modules/es6.reflect.apply.js","core-js/modules/es6.reflect.construct":"../node_modules/core-js/modules/es6.reflect.construct.js","core-js/modules/es6.reflect.define-property":"../node_modules/core-js/modules/es6.reflect.define-property.js","core-js/modules/es6.reflect.delete-property":"../node_modules/core-js/modules/es6.reflect.delete-property.js","core-js/modules/es6.reflect.get":"../node_modules/core-js/modules/es6.reflect.get.js","core-js/modules/es6.reflect.get-own-property-descriptor":"../node_modules/core-js/modules/es6.reflect.get-own-property-descriptor.js","core-js/modules/es6.reflect.get-prototype-of":"../node_modules/core-js/modules/es6.reflect.get-prototype-of.js","core-js/modules/es6.reflect.has":"../node_modules/core-js/modules/es6.reflect.has.js","core-js/modules/es6.reflect.is-extensible":"../node_modules/core-js/modules/es6.reflect.is-extensible.js","core-js/modules/es6.reflect.own-keys":"../node_modules/core-js/modules/es6.reflect.own-keys.js","core-js/modules/es6.reflect.prevent-extensions":"../node_modules/core-js/modules/es6.reflect.prevent-extensions.js","core-js/modules/es6.reflect.set":"../node_modules/core-js/modules/es6.reflect.set.js","core-js/modules/es6.reflect.set-prototype-of":"../node_modules/core-js/modules/es6.reflect.set-prototype-of.js","core-js/modules/es6.promise":"../node_modules/core-js/modules/es6.promise.js","core-js/modules/es6.symbol":"../node_modules/core-js/modules/es6.symbol.js","core-js/modules/es6.object.freeze":"../node_modules/core-js/modules/es6.object.freeze.js","core-js/modules/es6.object.seal":"../node_modules/core-js/modules/es6.object.seal.js","core-js/modules/es6.object.prevent-extensions":"../node_modules/core-js/modules/es6.object.prevent-extensions.js","core-js/modules/es6.object.is-frozen":"../node_modules/core-js/modules/es6.object.is-frozen.js","core-js/modules/es6.object.is-sealed":"../node_modules/core-js/modules/es6.object.is-sealed.js","core-js/modules/es6.object.is-extensible":"../node_modules/core-js/modules/es6.object.is-extensible.js","core-js/modules/es6.object.get-own-property-descriptor":"../node_modules/core-js/modules/es6.object.get-own-property-descriptor.js","core-js/modules/es6.object.get-prototype-of":"../node_modules/core-js/modules/es6.object.get-prototype-of.js","core-js/modules/es6.object.keys":"../node_modules/core-js/modules/es6.object.keys.js","core-js/modules/es6.object.get-own-property-names":"../node_modules/core-js/modules/es6.object.get-own-property-names.js","core-js/modules/es6.object.assign":"../node_modules/core-js/modules/es6.object.assign.js","core-js/modules/es6.object.is":"../node_modules/core-js/modules/es6.object.is.js","core-js/modules/es6.object.set-prototype-of":"../node_modules/core-js/modules/es6.object.set-prototype-of.js","core-js/modules/es6.function.name":"../node_modules/core-js/modules/es6.function.name.js","core-js/modules/es6.string.raw":"../node_modules/core-js/modules/es6.string.raw.js","core-js/modules/es6.string.from-code-point":"../node_modules/core-js/modules/es6.string.from-code-point.js","core-js/modules/es6.string.code-point-at":"../node_modules/core-js/modules/es6.string.code-point-at.js","core-js/modules/es6.string.repeat":"../node_modules/core-js/modules/es6.string.repeat.js","core-js/modules/es6.string.starts-with":"../node_modules/core-js/modules/es6.string.starts-with.js","core-js/modules/es6.string.ends-with":"../node_modules/core-js/modules/es6.string.ends-with.js","core-js/modules/es6.string.includes":"../node_modules/core-js/modules/es6.string.includes.js","core-js/modules/es6.regexp.flags":"../node_modules/core-js/modules/es6.regexp.flags.js","core-js/modules/es6.regexp.match":"../node_modules/core-js/modules/es6.regexp.match.js","core-js/modules/es6.regexp.replace":"../node_modules/core-js/modules/es6.regexp.replace.js","core-js/modules/es6.regexp.split":"../node_modules/core-js/modules/es6.regexp.split.js","core-js/modules/es6.regexp.search":"../node_modules/core-js/modules/es6.regexp.search.js","core-js/modules/es6.array.from":"../node_modules/core-js/modules/es6.array.from.js","core-js/modules/es6.array.of":"../node_modules/core-js/modules/es6.array.of.js","core-js/modules/es6.array.copy-within":"../node_modules/core-js/modules/es6.array.copy-within.js","core-js/modules/es6.array.find":"../node_modules/core-js/modules/es6.array.find.js","core-js/modules/es6.array.find-index":"../node_modules/core-js/modules/es6.array.find-index.js","core-js/modules/es6.array.fill":"../node_modules/core-js/modules/es6.array.fill.js","core-js/modules/es6.array.iterator":"../node_modules/core-js/modules/es6.array.iterator.js","core-js/modules/es6.number.is-finite":"../node_modules/core-js/modules/es6.number.is-finite.js","core-js/modules/es6.number.is-integer":"../node_modules/core-js/modules/es6.number.is-integer.js","core-js/modules/es6.number.is-safe-integer":"../node_modules/core-js/modules/es6.number.is-safe-integer.js","core-js/modules/es6.number.is-nan":"../node_modules/core-js/modules/es6.number.is-nan.js","core-js/modules/es6.number.epsilon":"../node_modules/core-js/modules/es6.number.epsilon.js","core-js/modules/es6.number.min-safe-integer":"../node_modules/core-js/modules/es6.number.min-safe-integer.js","core-js/modules/es6.number.max-safe-integer":"../node_modules/core-js/modules/es6.number.max-safe-integer.js","core-js/modules/es6.math.acosh":"../node_modules/core-js/modules/es6.math.acosh.js","core-js/modules/es6.math.asinh":"../node_modules/core-js/modules/es6.math.asinh.js","core-js/modules/es6.math.atanh":"../node_modules/core-js/modules/es6.math.atanh.js","core-js/modules/es6.math.cbrt":"../node_modules/core-js/modules/es6.math.cbrt.js","core-js/modules/es6.math.clz32":"../node_modules/core-js/modules/es6.math.clz32.js","core-js/modules/es6.math.cosh":"../node_modules/core-js/modules/es6.math.cosh.js","core-js/modules/es6.math.expm1":"../node_modules/core-js/modules/es6.math.expm1.js","core-js/modules/es6.math.fround":"../node_modules/core-js/modules/es6.math.fround.js","core-js/modules/es6.math.hypot":"../node_modules/core-js/modules/es6.math.hypot.js","core-js/modules/es6.math.imul":"../node_modules/core-js/modules/es6.math.imul.js","core-js/modules/es6.math.log1p":"../node_modules/core-js/modules/es6.math.log1p.js","core-js/modules/es6.math.log10":"../node_modules/core-js/modules/es6.math.log10.js","core-js/modules/es6.math.log2":"../node_modules/core-js/modules/es6.math.log2.js","core-js/modules/es6.math.sign":"../node_modules/core-js/modules/es6.math.sign.js","core-js/modules/es6.math.sinh":"../node_modules/core-js/modules/es6.math.sinh.js","core-js/modules/es6.math.tanh":"../node_modules/core-js/modules/es6.math.tanh.js","core-js/modules/es6.math.trunc":"../node_modules/core-js/modules/es6.math.trunc.js","core-js/modules/es7.array.includes":"../node_modules/core-js/modules/es7.array.includes.js","core-js/modules/es7.object.values":"../node_modules/core-js/modules/es7.object.values.js","core-js/modules/es7.object.entries":"../node_modules/core-js/modules/es7.object.entries.js","core-js/modules/es7.object.get-own-property-descriptors":"../node_modules/core-js/modules/es7.object.get-own-property-descriptors.js","core-js/modules/es7.string.pad-start":"../node_modules/core-js/modules/es7.string.pad-start.js","core-js/modules/es7.string.pad-end":"../node_modules/core-js/modules/es7.string.pad-end.js","core-js/modules/web.timers":"../node_modules/core-js/modules/web.timers.js","core-js/modules/web.immediate":"../node_modules/core-js/modules/web.immediate.js","core-js/modules/web.dom.iterable":"../node_modules/core-js/modules/web.dom.iterable.js","regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","d3":"../node_modules/d3/index.js","d3-time-format/locale/ru-RU":"../node_modules/d3-time-format/locale/ru-RU.json"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"core-js/modules/es6.typed.array-buffer":"../node_modules/core-js/modules/es6.typed.array-buffer.js","core-js/modules/es6.typed.int8-array":"../node_modules/core-js/modules/es6.typed.int8-array.js","core-js/modules/es6.typed.uint8-array":"../node_modules/core-js/modules/es6.typed.uint8-array.js","core-js/modules/es6.typed.uint8-clamped-array":"../node_modules/core-js/modules/es6.typed.uint8-clamped-array.js","core-js/modules/es6.typed.int16-array":"../node_modules/core-js/modules/es6.typed.int16-array.js","core-js/modules/es6.typed.uint16-array":"../node_modules/core-js/modules/es6.typed.uint16-array.js","core-js/modules/es6.typed.int32-array":"../node_modules/core-js/modules/es6.typed.int32-array.js","core-js/modules/es6.typed.uint32-array":"../node_modules/core-js/modules/es6.typed.uint32-array.js","core-js/modules/es6.typed.float32-array":"../node_modules/core-js/modules/es6.typed.float32-array.js","core-js/modules/es6.typed.float64-array":"../node_modules/core-js/modules/es6.typed.float64-array.js","core-js/modules/es6.map":"../node_modules/core-js/modules/es6.map.js","core-js/modules/es6.set":"../node_modules/core-js/modules/es6.set.js","core-js/modules/es6.weak-map":"../node_modules/core-js/modules/es6.weak-map.js","core-js/modules/es6.weak-set":"../node_modules/core-js/modules/es6.weak-set.js","core-js/modules/es6.reflect.apply":"../node_modules/core-js/modules/es6.reflect.apply.js","core-js/modules/es6.reflect.construct":"../node_modules/core-js/modules/es6.reflect.construct.js","core-js/modules/es6.reflect.define-property":"../node_modules/core-js/modules/es6.reflect.define-property.js","core-js/modules/es6.reflect.delete-property":"../node_modules/core-js/modules/es6.reflect.delete-property.js","core-js/modules/es6.reflect.get":"../node_modules/core-js/modules/es6.reflect.get.js","core-js/modules/es6.reflect.get-own-property-descriptor":"../node_modules/core-js/modules/es6.reflect.get-own-property-descriptor.js","core-js/modules/es6.reflect.get-prototype-of":"../node_modules/core-js/modules/es6.reflect.get-prototype-of.js","core-js/modules/es6.reflect.has":"../node_modules/core-js/modules/es6.reflect.has.js","core-js/modules/es6.reflect.is-extensible":"../node_modules/core-js/modules/es6.reflect.is-extensible.js","core-js/modules/es6.reflect.own-keys":"../node_modules/core-js/modules/es6.reflect.own-keys.js","core-js/modules/es6.reflect.prevent-extensions":"../node_modules/core-js/modules/es6.reflect.prevent-extensions.js","core-js/modules/es6.reflect.set":"../node_modules/core-js/modules/es6.reflect.set.js","core-js/modules/es6.reflect.set-prototype-of":"../node_modules/core-js/modules/es6.reflect.set-prototype-of.js","core-js/modules/es6.promise":"../node_modules/core-js/modules/es6.promise.js","core-js/modules/es6.symbol":"../node_modules/core-js/modules/es6.symbol.js","core-js/modules/es6.object.freeze":"../node_modules/core-js/modules/es6.object.freeze.js","core-js/modules/es6.object.seal":"../node_modules/core-js/modules/es6.object.seal.js","core-js/modules/es6.object.prevent-extensions":"../node_modules/core-js/modules/es6.object.prevent-extensions.js","core-js/modules/es6.object.is-frozen":"../node_modules/core-js/modules/es6.object.is-frozen.js","core-js/modules/es6.object.is-sealed":"../node_modules/core-js/modules/es6.object.is-sealed.js","core-js/modules/es6.object.is-extensible":"../node_modules/core-js/modules/es6.object.is-extensible.js","core-js/modules/es6.object.get-own-property-descriptor":"../node_modules/core-js/modules/es6.object.get-own-property-descriptor.js","core-js/modules/es6.object.get-prototype-of":"../node_modules/core-js/modules/es6.object.get-prototype-of.js","core-js/modules/es6.object.keys":"../node_modules/core-js/modules/es6.object.keys.js","core-js/modules/es6.object.get-own-property-names":"../node_modules/core-js/modules/es6.object.get-own-property-names.js","core-js/modules/es6.object.assign":"../node_modules/core-js/modules/es6.object.assign.js","core-js/modules/es6.object.is":"../node_modules/core-js/modules/es6.object.is.js","core-js/modules/es6.object.set-prototype-of":"../node_modules/core-js/modules/es6.object.set-prototype-of.js","core-js/modules/es6.function.name":"../node_modules/core-js/modules/es6.function.name.js","core-js/modules/es6.string.raw":"../node_modules/core-js/modules/es6.string.raw.js","core-js/modules/es6.string.from-code-point":"../node_modules/core-js/modules/es6.string.from-code-point.js","core-js/modules/es6.string.code-point-at":"../node_modules/core-js/modules/es6.string.code-point-at.js","core-js/modules/es6.string.repeat":"../node_modules/core-js/modules/es6.string.repeat.js","core-js/modules/es6.string.starts-with":"../node_modules/core-js/modules/es6.string.starts-with.js","core-js/modules/es6.string.ends-with":"../node_modules/core-js/modules/es6.string.ends-with.js","core-js/modules/es6.string.includes":"../node_modules/core-js/modules/es6.string.includes.js","core-js/modules/es6.regexp.flags":"../node_modules/core-js/modules/es6.regexp.flags.js","core-js/modules/es6.regexp.match":"../node_modules/core-js/modules/es6.regexp.match.js","core-js/modules/es6.regexp.replace":"../node_modules/core-js/modules/es6.regexp.replace.js","core-js/modules/es6.regexp.split":"../node_modules/core-js/modules/es6.regexp.split.js","core-js/modules/es6.regexp.search":"../node_modules/core-js/modules/es6.regexp.search.js","core-js/modules/es6.array.from":"../node_modules/core-js/modules/es6.array.from.js","core-js/modules/es6.array.of":"../node_modules/core-js/modules/es6.array.of.js","core-js/modules/es6.array.copy-within":"../node_modules/core-js/modules/es6.array.copy-within.js","core-js/modules/es6.array.find":"../node_modules/core-js/modules/es6.array.find.js","core-js/modules/es6.array.find-index":"../node_modules/core-js/modules/es6.array.find-index.js","core-js/modules/es6.array.fill":"../node_modules/core-js/modules/es6.array.fill.js","core-js/modules/es6.array.iterator":"../node_modules/core-js/modules/es6.array.iterator.js","core-js/modules/es6.number.is-finite":"../node_modules/core-js/modules/es6.number.is-finite.js","core-js/modules/es6.number.is-integer":"../node_modules/core-js/modules/es6.number.is-integer.js","core-js/modules/es6.number.is-safe-integer":"../node_modules/core-js/modules/es6.number.is-safe-integer.js","core-js/modules/es6.number.is-nan":"../node_modules/core-js/modules/es6.number.is-nan.js","core-js/modules/es6.number.epsilon":"../node_modules/core-js/modules/es6.number.epsilon.js","core-js/modules/es6.number.min-safe-integer":"../node_modules/core-js/modules/es6.number.min-safe-integer.js","core-js/modules/es6.number.max-safe-integer":"../node_modules/core-js/modules/es6.number.max-safe-integer.js","core-js/modules/es6.math.acosh":"../node_modules/core-js/modules/es6.math.acosh.js","core-js/modules/es6.math.asinh":"../node_modules/core-js/modules/es6.math.asinh.js","core-js/modules/es6.math.atanh":"../node_modules/core-js/modules/es6.math.atanh.js","core-js/modules/es6.math.cbrt":"../node_modules/core-js/modules/es6.math.cbrt.js","core-js/modules/es6.math.clz32":"../node_modules/core-js/modules/es6.math.clz32.js","core-js/modules/es6.math.cosh":"../node_modules/core-js/modules/es6.math.cosh.js","core-js/modules/es6.math.expm1":"../node_modules/core-js/modules/es6.math.expm1.js","core-js/modules/es6.math.fround":"../node_modules/core-js/modules/es6.math.fround.js","core-js/modules/es6.math.hypot":"../node_modules/core-js/modules/es6.math.hypot.js","core-js/modules/es6.math.imul":"../node_modules/core-js/modules/es6.math.imul.js","core-js/modules/es6.math.log1p":"../node_modules/core-js/modules/es6.math.log1p.js","core-js/modules/es6.math.log10":"../node_modules/core-js/modules/es6.math.log10.js","core-js/modules/es6.math.log2":"../node_modules/core-js/modules/es6.math.log2.js","core-js/modules/es6.math.sign":"../node_modules/core-js/modules/es6.math.sign.js","core-js/modules/es6.math.sinh":"../node_modules/core-js/modules/es6.math.sinh.js","core-js/modules/es6.math.tanh":"../node_modules/core-js/modules/es6.math.tanh.js","core-js/modules/es6.math.trunc":"../node_modules/core-js/modules/es6.math.trunc.js","core-js/modules/es7.array.includes":"../node_modules/core-js/modules/es7.array.includes.js","core-js/modules/es7.object.values":"../node_modules/core-js/modules/es7.object.values.js","core-js/modules/es7.object.entries":"../node_modules/core-js/modules/es7.object.entries.js","core-js/modules/es7.object.get-own-property-descriptors":"../node_modules/core-js/modules/es7.object.get-own-property-descriptors.js","core-js/modules/es7.string.pad-start":"../node_modules/core-js/modules/es7.string.pad-start.js","core-js/modules/es7.string.pad-end":"../node_modules/core-js/modules/es7.string.pad-end.js","core-js/modules/web.timers":"../node_modules/core-js/modules/web.timers.js","core-js/modules/web.immediate":"../node_modules/core-js/modules/web.immediate.js","core-js/modules/web.dom.iterable":"../node_modules/core-js/modules/web.dom.iterable.js","regenerator-runtime/runtime":"../node_modules/regenerator-runtime/runtime.js","d3":"../node_modules/d3/index.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 
@@ -34163,7 +34050,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = '' || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + '53280' + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + '53316' + '/');
   ws.onmessage = function (event) {
     var data = JSON.parse(event.data);
 
@@ -34304,5 +34191,5 @@ function hmrAccept(bundle, id) {
     return hmrAccept(global.parcelRequire, id);
   });
 }
-},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","index.js"], null)
-//# sourceMappingURL=/src.0b481194.map
+},{}]},{},["../node_modules/parcel-bundler/src/builtins/hmr-runtime.js","stock-chart-widget.js"], null)
+//# sourceMappingURL=/stock-chart-widget.map
